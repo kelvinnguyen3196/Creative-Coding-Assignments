@@ -88,11 +88,11 @@ function draw_start() {
 
 // draws the background (behind dino)
 function draw_bg() {
-    for(let i = 0; i < 5; i++) {
-        image(bg_layers[5 - i], 0 - bg_pos[5 - i] - parallax_offsets[5 - i], 0, size * 32, size * 9);
+    for(let i = 5; i > 0; i--) {
+        image(bg_layers[i], 0 - bg_pos[i] - parallax_offsets[i], 0, size * 32, size * 9);
     }
-    for(let i = 0; i < 5; i++) {
-        image(bg_layers[5 - i], 0 + (size * 32) - bg_pos[5 - i] - parallax_offsets[5 - i], 0, size * 32, size * 9);
+    for(let i = 5; i > 0; i--) {
+        image(bg_layers[i], 0 + (size * 32) - bg_pos[i] - parallax_offsets[i], 0, size * 32, size * 9);
     }
 }
 // draws the foreground (in front of dino)
