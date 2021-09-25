@@ -1,3 +1,12 @@
 body {
     background: lightblue;
 }
+
+span {
+    font-weight: bold;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+}
