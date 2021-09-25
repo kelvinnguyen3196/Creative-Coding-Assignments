@@ -6,7 +6,7 @@ let parallax_offsets = [0, 0, 0, 0, 0, 0];  // offets to add for parallax
 
 let dino = [];                              // stores dino sprites
 let dino_sprite = 0;                        // displays dino from index of dino[]
-let slow_dino = 5;                          // slows dino sprite change; larger = slower    
+let slow_dino = 4;                          // slows dino sprite change; larger = slower    
 let current_dino = 0;                       // used for slowing dino
 
 let size = 25;                              // scales the canvas and elements
@@ -51,8 +51,6 @@ function draw() {
         bg_pos = bg_pos.map((num) => {
             return num += 2;
         });
-        console.log(`bg_pos: ${bg_pos}\tp_pos: ${parallax_offsets
-        }`);
         // add the parallax effect
         parallax_offsets = parallax_offsets.map((num, i) => {
             return num + parallax_values[i];
@@ -88,12 +86,26 @@ function draw_start() {
 
 // draws the background (behind dino)
 function draw_bg() {
-    for(let i = 5; i > 0; i--) {
+    image(bg_layers[5], 0, 0, size * 32, size * 9);
+
+    for(let i = 4; i > 0; i--) {
         image(bg_layers[i], 0 - bg_pos[i] - parallax_offsets[i], 0, size * 32, size * 9);
-    }
-    for(let i = 5; i > 0; i--) {
         image(bg_layers[i], 0 + (size * 32) - bg_pos[i] - parallax_offsets[i], 0, size * 32, size * 9);
     }
+
+    // image(bg_layers[5], 0, 0, size * 32, size * 9);
+
+    // image(bg_layers[4], 0 - bg_pos[4] - parallax_offsets[4], 0, size * 32, size * 9);
+    // image(bg_layers[4], 0 + (size * 32) - bg_pos[4] - parallax_offsets[4], 0, size * 32, size * 9);
+
+    // image(bg_layers[3], 0 - bg_pos[3] - parallax_offsets[3], 0, size * 32, size * 9);
+    // image(bg_layers[3], 0 + (size * 32) - bg_pos[3] - parallax_offsets[3], 0, size * 32, size * 9);
+
+    // image(bg_layers[2], 0 - bg_pos[2] - parallax_offsets[2], 0, size * 32, size * 9);
+    // image(bg_layers[2], 0 + (size * 32) - bg_pos[2] - parallax_offsets[2], 0, size * 32, size * 9);
+
+    // image(bg_layers[1], 0 - bg_pos[1] - parallax_offsets[1], 0, size * 32, size * 9);
+    // image(bg_layers[1], 0 + (size * 32) - bg_pos[1] - parallax_offsets[1], 0, size * 32, size * 9);
 }
 // draws the foreground (in front of dino)
 function draw_fg() {
