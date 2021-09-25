@@ -119,14 +119,19 @@ function draw_dino() {
     }
     image(dino[dino_sprite], size * 9 - 150, size * 9 - 110 - dino_jump_height, 100, 100);
     // increase sprite every slow_dino amount of frames
-    if(current_dino === slow_dino) {
-        dino_sprite++;
-        dino_sprite %= 8;   // keeps 0 <= dino_sprite <= 7
-        current_dino = 0;
+    if(!dino_jumped && dino_jump_height === 0) {
+        if(current_dino === slow_dino) {
+            dino_sprite++;
+            dino_sprite %= 8;   // keeps 0 <= dino_sprite <= 7
+            current_dino = 0;
+        }
+        else {  // increment current_dino
+            current_dino++;
+            current_dino %= slow_dino + 1;
+        }
     }
-    else {  // increment current_dino
-        current_dino++;
-        current_dino %= slow_dino + 1;
+    else {
+
     }
 }
 
