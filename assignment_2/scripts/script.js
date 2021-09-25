@@ -1,6 +1,6 @@
 // TODO: Move hard coded values in variables
 let bg_layers = [];                         // stores bg layers
-let bg_pos = 0;                             // moves the bg slowly
+let bg_pos = [0, 0, 0, 0, 0, 0];            // moves each bg layer slowly
 let parallax_values = [6, 5, 4, 3, 2, 1];   // rate of parallax
 let parallax_offsets = [0, 0, 0, 0, 0, 0];  // offets to add for parallax
 
@@ -44,20 +44,30 @@ function draw() {
         draw_start();
     }
     else {
-        draw_bg(bg_pos);
+        draw_bg();
         draw_dino();
-        draw_fg(bg_pos);
+        draw_fg();
         // moves the bg and fg
-        bg_pos += 2;
+        bg_pos = bg_pos.map((num) => {
+            return num += 2;
+        });
+        console.log(`bg_pos: ${bg_pos}\tp_pos: ${parallax_offsets
+        }`);
         // add the parallax effect
         parallax_offsets = parallax_offsets.map((num, i) => {
             return num + parallax_values[i];
         });
-        console.log(parallax_offsets);
         // TODO: calculate when bg goes off screen due to parallax moving faster
-        if(bg_pos >= (size * 32)) { // bg and parallax offsets
-            bg_pos = 0;
-            parallax_offsets = [0, 0, 0, 0, 0, 0];
+            // TODO: need to check for each layer independently
+        // if(bg_pos >= (size * 32)) { // bg and parallax offsets
+        //     bg_pos = 0;
+        //     parallax_offsets = [0, 0, 0, 0, 0, 0];
+        // }
+        for(let i = 0; i < bg_pos.length; i++) {
+            if((bg_pos[i] + parallax_offsets[i]) > (size * 32)) {
+                bg_pos[i] = 0;
+                parallax_offsets[i] = 0;
+            }
         }
         
     }
@@ -77,18 +87,18 @@ function draw_start() {
 }
 
 // draws the background (behind dino)
-function draw_bg(bg_pos) {
+function draw_bg() {
     for(let i = 0; i < 5; i++) {
-        image(bg_layers[5 - i], 0 - bg_pos, 0, size * 32, size * 9);
+        image(bg_layers[5 - i], 0 - bg_pos[5 - i] - parallax_offsets[5 - i], 0, size * 32, size * 9);
     }
     for(let i = 0; i < 5; i++) {
-        image(bg_layers[5 - i], 0 + (size * 32) - bg_pos, 0, size * 32, size * 9);
+        image(bg_layers[5 - i], 0 + (size * 32) - bg_pos[5 - i] - parallax_offsets[5 - i], 0, size * 32, size * 9);
     }
 }
 // draws the foreground (in front of dino)
-function draw_fg(bg_pos) {
-    image(bg_layers[0], 0 - bg_pos - parallax_offsets[0], 0, size * 32, size * 9);
-    image(bg_layers[0], 0 + (size * 32) - bg_pos - parallax_offsets[0], 0, size * 32, size * 9);
+function draw_fg() {
+    image(bg_layers[0], 0 - bg_pos[0] - parallax_offsets[0], 0, size * 32, size * 9);
+    image(bg_layers[0], 0 + (size * 32) - bg_pos[0] - parallax_offsets[0], 0, size * 32, size * 9);
 }
 
 // draws dino
