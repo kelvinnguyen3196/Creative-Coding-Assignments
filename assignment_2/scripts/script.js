@@ -41,10 +41,15 @@ function draw() {
         draw_start();
     }
     else {
-        draw_bg();
+        draw_bg(bg_pos);
+        bg_pos++;
+        if(bg_pos === (size * 32)) {
+            bg_pos = 0;
+        }
     }
 }
 
+// draws the start menu
 function draw_start() {
     textFont(font_one);
     textAlign(CENTER);
@@ -57,11 +62,14 @@ function draw_start() {
     text('Space to start', width / 2, height / 2);
 }
 
-function draw_bg() {
+// draws the background
+function draw_bg(offset) {
     for(let i = 0; i < 6; i++) {
-        image(bg_layers[5 - i], 0, 0, size * 32, size * 9);
+        image(bg_layers[5 - i], 0 - offset, 0, size * 32, size * 9);
     }
-    console.log(frameRate());
+    for(let i = 0; i < 6; i++) {
+        image(bg_layers[5 - i], 0 + (size * 32) - offset, 0, size * 32, size * 9);
+    }
 }
 
 function keyPressed() {
