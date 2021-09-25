@@ -8,6 +8,8 @@ let dino = [];                              // stores dino sprites
 let dino_sprite = 0;                        // displays dino from index of dino[]
 let slow_dino = 4;                          // slows dino sprite change; larger = slower    
 let current_dino = 0;                       // used for slowing dino
+let dino_jump_height = 0;                   // dino jump height
+let dino_jumped = false;                    // checks if dino has jumped
 
 let size = 25;                              // scales the canvas and elements
 
@@ -40,10 +42,10 @@ function setup() {
 
 function draw() {
     translate(-width / 2, -height / 2);
-    if(!game_start) {
+    if(!game_start) {   // start menu
         draw_start();
     }
-    else {
+    else {  // game loop
         draw_bg();
         draw_dino();
         draw_fg();
@@ -55,12 +57,8 @@ function draw() {
         parallax_offsets = parallax_offsets.map((num, i) => {
             return num + parallax_values[i];
         });
-        // TODO: calculate when bg goes off screen due to parallax moving faster
-            // TODO: need to check for each layer independently
-        // if(bg_pos >= (size * 32)) { // bg and parallax offsets
-        //     bg_pos = 0;
-        //     parallax_offsets = [0, 0, 0, 0, 0, 0];
-        // }
+        
+        // check each layer independenly if time to reset
         for(let i = 0; i < bg_pos.length; i++) {
             if((bg_pos[i] + parallax_offsets[i]) > (size * 32)) {
                 bg_pos[i] = 0;
@@ -86,26 +84,13 @@ function draw_start() {
 
 // draws the background (behind dino)
 function draw_bg() {
+    // background gradient does not need to parallax
     image(bg_layers[5], 0, 0, size * 32, size * 9);
-
+    // move the layers behind dino with bg_pos offset and parallax offset for parallax effect
     for(let i = 4; i > 0; i--) {
         image(bg_layers[i], 0 - bg_pos[i] - parallax_offsets[i], 0, size * 32, size * 9);
         image(bg_layers[i], 0 + (size * 32) - bg_pos[i] - parallax_offsets[i], 0, size * 32, size * 9);
     }
-
-    // image(bg_layers[5], 0, 0, size * 32, size * 9);
-
-    // image(bg_layers[4], 0 - bg_pos[4] - parallax_offsets[4], 0, size * 32, size * 9);
-    // image(bg_layers[4], 0 + (size * 32) - bg_pos[4] - parallax_offsets[4], 0, size * 32, size * 9);
-
-    // image(bg_layers[3], 0 - bg_pos[3] - parallax_offsets[3], 0, size * 32, size * 9);
-    // image(bg_layers[3], 0 + (size * 32) - bg_pos[3] - parallax_offsets[3], 0, size * 32, size * 9);
-
-    // image(bg_layers[2], 0 - bg_pos[2] - parallax_offsets[2], 0, size * 32, size * 9);
-    // image(bg_layers[2], 0 + (size * 32) - bg_pos[2] - parallax_offsets[2], 0, size * 32, size * 9);
-
-    // image(bg_layers[1], 0 - bg_pos[1] - parallax_offsets[1], 0, size * 32, size * 9);
-    // image(bg_layers[1], 0 + (size * 32) - bg_pos[1] - parallax_offsets[1], 0, size * 32, size * 9);
 }
 // draws the foreground (in front of dino)
 function draw_fg() {
@@ -115,7 +100,24 @@ function draw_fg() {
 
 // draws dino
 function draw_dino() {
-    image(dino[dino_sprite], size * 9 - 150, size * 9 - 110, 100, 100);
+    if(dino_jumped) {   // jump was triggered
+        if(dino_jump_height >= 150) {
+            dino_jumped = false;
+        }
+        else {
+            dino_jump_height += 10; // increase dino height
+        }
+    }
+    
+    if(!dino_jumped) {    // reached jump height or has not jumped yet
+        if(dino_jump_height <= 0) {
+            dino_jump_height = 0;
+        }
+        else {
+            dino_jump_height -= 4;
+        }
+    }
+    image(dino[dino_sprite], size * 9 - 150, size * 9 - 110 - dino_jump_height, 100, 100);
     // increase sprite every slow_dino amount of frames
     if(current_dino === slow_dino) {
         dino_sprite++;
@@ -134,5 +136,6 @@ function keyPressed() {
             game_start = true;
             return;
         }
+        dino_jumped = true;
     }
 }
