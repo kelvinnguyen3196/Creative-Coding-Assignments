@@ -54,7 +54,7 @@ function draw_start() {
     image(start_img, 0, 0, size * 32, size * 9);
     text('DINO RUN', width / 2, 75);
     textSize(20);
-    text('Space/touch to start', width / 2, height / 2);
+    text('Space to start', width / 2, height / 2);
 }
 
 function draw_bg() {
@@ -64,15 +64,11 @@ function draw_bg() {
     console.log(frameRate());
 }
 
-// Handles game start
-function mousePressed() {
-    if(!game_start) {
-        game_start = true;
-    }
-}
-
-function touchStarted() {
-    if(!game_start) {
-        game_start = true;
+function keyPressed() {
+    if(keyCode === 32) {
+        if(!game_start) {
+            game_start = true;
+            return;
+        }
     }
 }
