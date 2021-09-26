@@ -14,8 +14,16 @@
         <main></main>
     </div>
 
+    <h1>Tips</h1>
+    <ul>
+        <li>Due to the way the collision detect is implemented the dinosaur's hitbox is closer to the <span>end of the body</span>. Use this to your advantage!</li>
+        <li>There are are five dinosaurs you can pick from: Blue, Green, Orange, Purple, Red, and Yellow. Press the first letter of the color dinosaur you would prefer. Pressing space will randomly pick a dinosaur for you.</li>
+    </ul>
+
     <h1>Troubleshooting</h1>
     <h2>Game does not load</h2>
-    <p><span>Explanation: </span>I ran into this issue during development. It would log into my console that the canvas size exceeded the maximum.<br><span>Solution: </span>Try resetting your browser. Alternatively open the game link in an incognito browser.</p>
+    <p><span>Details: </span>I ran into this issue during development. It would log into my console that the canvas size exceeded the maximum.<br><span>Solution: </span>Try resetting your browser. Alternatively open the game link in an incognito browser.</p>
+    <h2>Game is slow</h2>
+    <p><span>Details: </span>Firstly the website need to download many different variations of the same asset due to the randomness of the game. Furthermore the renderer (WebGL) interprets the code meaning it is not pre-compiled. This means the code will run slightly slower. Lastly the images are rather large. They were orginally drawn in double the length of 4K resolution for another project of mine.<br><span>Solution: </span>Just be a little patient (: Thank you!</p>
 </body>
 </html>
