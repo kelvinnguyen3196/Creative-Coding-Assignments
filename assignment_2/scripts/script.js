@@ -141,6 +141,8 @@ function keyPressed() {
             game_start = true;
             return;
         }
-        dino_jumped = true;
+        if(!dino_jumped && dino_jump_height === 0) {
+            dino_jumped = true;
+        }
     }
 }
