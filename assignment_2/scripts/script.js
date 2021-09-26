@@ -1,9 +1,9 @@
 // TODO: list of features to implement
     // TODO: keep score using time 
         // TODO: https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiVv_jVgpzzAhWjoFsKHbPFBM8QFnoECAcQAQ&url=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F6341774%2Fkeep-track-of-how-much-time-is-spent-showing-certain-elements-on-the-page&usg=AOvVaw1uWmMu_xnoWyuzd8SQjmPx
-    // TODO: add cacti
-        // TODO: random chance to spawn at the end of the screen
     // TODO: calculate hit box and stop game when hit cacti
+    // TODO: timer to stop cacti from spawning too often
+    // TODO: timer to stop cacti from spawning too infrequently
 // note about aspect ratio
     // since aspect_ratio.x is a lot longer than using a hardcoded 32
     // I think it would be more beneficial to mention that aspect
@@ -24,7 +24,11 @@ let dino_jump_height = 0;                   // dino jump height
 let dino_jumped = false;                    // checks if dino has jumped
 
 let cacti = [];                             // stores all different kinds of cacti
-let allowed_cacti = 3;                      // number of allowed cacti on screen
+let active_cacti = [];                      // shift old cacti and push new cacti
+let cacti_aspect_ratio = [];
+let cacti_img_scale = 0.1;                  // multiply with cacti_aspect_ratio for size
+let cacti_spawn_chance = 1;                 // percent chance for cacti to spawn
+let cacti_spawn_range = 200;                // spawn_chance / cacti_spawn_range = true spawn chance
 
 let size = 25;                              // scales the canvas and elements
 
@@ -51,6 +55,14 @@ function preload() {
         let img = loadImage(`assets/Cacti/cactus${i + 1}.png`);
         cacti.push(img);
     }
+    // aspect ratio for cacti
+    cacti_aspect_ratio = [
+        createVector(241, 598),
+        createVector(298, 581),
+        createVector(325, 707),
+        createVector(211, 529),
+        createVector(411, 772)
+    ];
     // load start img
     start_img = loadImage('assets/original-dino-game-bg.png');
     // load fonts
@@ -70,10 +82,13 @@ function draw() {
         draw_start();
     }
     else {  // game loop
+        collision_check();
         draw_bg();
         draw_dino();
+        draw_cacti();
         draw_fg();
-        image(cacti[3], 0, 0, 100, 100);
+        spawn_cacti();
+        purge_old_cacti();
         // moves the bg and fg
         bg_pos = bg_pos.map((num) => {
             return num += 2;
@@ -92,7 +107,6 @@ function draw() {
         
     }
 }
-
 // draws the start menu
 function draw_start() {
     textFont(font_one);
@@ -156,6 +170,38 @@ function draw_dino() {
 
     }
 }
+// spawn cacti randomly
+function spawn_cacti() {
+    let cacti_pull = Math.floor(Math.random() * cacti_spawn_range);
+    let cacti_sprite = Math.floor(Math.random() * 5);
+    
+    if(cacti_pull <= cacti_spawn_chance) {
+        let new_cacti = {sprite: cacti_sprite, coordinates: createVector(width, dino_position.y)};
+        active_cacti.push(new_cacti);
+    }
+}
+// draw cacti
+function draw_cacti() {
+    for(let i = 0; i < active_cacti.length; i++) {
+        let c_sprite = cacti[active_cacti[i].sprite];
+        active_cacti[i].coordinates.x -= 7; // hardcoded eyeball value to match pace of bg
+        let cactus_aspect_x = cacti_aspect_ratio[active_cacti[i].sprite].x;
+        let cactus_aspect_y = cacti_aspect_ratio[active_cacti[i].sprite].y;
+        image(c_sprite, active_cacti[i].coordinates.x, dino_position.y + 25, cacti_img_scale * cactus_aspect_x, cacti_img_scale * cactus_aspect_y);
+    }
+} 
+// removes old cacti that are off screen
+function purge_old_cacti() {    // checks and removes oldest cactus i.e. first element
+    if(active_cacti.length > 0) {
+        if(active_cacti[0].coordinates.x <= -100) {  // leave some room for it to full disappear from screen
+            active_cacti.shift();
+        }
+    }
+}
+// checks for collision
+function collision_check() {
+    console.log(`dino_pos: (${dino_position.x}, ${dino_position.y + dino_jump_height})`);
+}
 // handles space bar for jumping
 function keyPressed() {
     if(keyCode === 32) {
@@ -163,7 +209,7 @@ function keyPressed() {
             game_start = true;
             return;
         }
-        if(!dino_jumped && dino_jump_height === 0) {
+        if(!dino_jumped && dino_jump_height <= 10) {    // <= 10 allows for slightly earlier jumping for smoother gameplay
             dino_jumped = true;
         }
     }
