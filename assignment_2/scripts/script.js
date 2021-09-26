@@ -23,6 +23,9 @@ let current_dino = 0;                       // used for slowing dino
 let dino_jump_height = 0;                   // dino jump height
 let dino_jumped = false;                    // checks if dino has jumped
 
+let cacti = [];                             // stores all different kinds of cacti
+let allowed_cacti = 3;                      // number of allowed cacti on screen
+
 let size = 25;                              // scales the canvas and elements
 
 let game_start = false;
@@ -42,6 +45,11 @@ function preload() {
     for(let i = 0; i < 6; i++) {
         let img = loadImage(`assets/Layers/${i + 1}.png`);
         bg_layers.push(img);
+    }
+    // loading cacti sprites
+    for(let i = 0; i < 5; i++) {
+        let img = loadImage(`assets/Cacti/cactus${i + 1}.png`);
+        cacti.push(img);
     }
     // load start img
     start_img = loadImage('assets/original-dino-game-bg.png');
@@ -65,7 +73,7 @@ function draw() {
         draw_bg();
         draw_dino();
         draw_fg();
-
+        image(cacti[3], 0, 0, 100, 100);
         // moves the bg and fg
         bg_pos = bg_pos.map((num) => {
             return num += 2;
