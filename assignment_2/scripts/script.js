@@ -1,7 +1,4 @@
 // TODO: list of features to implement
-    // TODO: keep score using time 
-        // TODO: https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiVv_jVgpzzAhWjoFsKHbPFBM8QFnoECAcQAQ&url=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F6341774%2Fkeep-track-of-how-much-time-is-spent-showing-certain-elements-on-the-page&usg=AOvVaw1uWmMu_xnoWyuzd8SQjmPx
-    // TODO: calculate hit box and stop game when hit cacti
     // TODO: timer to stop cacti from spawning too often
     // TODO: timer to stop cacti from spawning too infrequently
 // note about aspect ratio
@@ -16,6 +13,7 @@ let parallax_values = [6, 5, 4, 3, 2, 1];   // rate of parallax
 let parallax_offsets = [0, 0, 0, 0, 0, 0];  // offets to add for parallax
 
 let dino = [];                              // stores dino sprites
+let dino_size;
 let dino_position;                          // stores dino position
 let dino_sprite = 0;                        // displays dino from index of dino[]
 let slow_dino = 4;                          // slows dino sprite change; larger = slower    
@@ -33,6 +31,9 @@ let cacti_spawn_range = 200;                // spawn_chance / cacti_spawn_range 
 let size = 25;                              // scales the canvas and elements
 
 let game_start = false;
+let game_over = false;                      // true on collision
+let start_score;                            // keeps track of when game start
+let end_score;                              // filled when collision
 
 let font_one;
 let start_img;
@@ -74,6 +75,7 @@ function setup() {
     frameRate(60);
     // set up vectors
     dino_position = createVector(size * 9 - 150, size * 9 - 110);
+    dino_size = createVector(100, 100);
 }
 
 function draw() {
@@ -89,13 +91,25 @@ function draw() {
         draw_fg();
         spawn_cacti();
         purge_old_cacti();
+        draw_score();
+        draw_end();
         // moves the bg and fg
         bg_pos = bg_pos.map((num) => {
-            return num += 2;
+            if(!game_over) {
+                return num += 2;
+            }
+            else {
+                return num;
+            }
         });
         // add the parallax effect
         parallax_offsets = parallax_offsets.map((num, i) => {
-            return num + parallax_values[i];
+            if(!game_over) {
+                return num + parallax_values[i];
+            }
+            else {
+                return num;
+            }
         });
         // check each layer independenly if time to reset
         for(let i = 0; i < bg_pos.length; i++) {
@@ -153,7 +167,7 @@ function draw_dino() {
         }
     }
 
-    image(dino[dino_sprite], dino_position.x, dino_position.y - dino_jump_height, 100, 100);
+    image(dino[dino_sprite], dino_position.x, dino_position.y - dino_jump_height, dino_size.x, dino_size.y);
     // increase sprite every slow_dino amount of frames
     if(!dino_jumped && dino_jump_height === 0) {
         if(current_dino === slow_dino) {
@@ -162,7 +176,9 @@ function draw_dino() {
             current_dino = 0;
         }
         else {  // increment current_dino
-            current_dino++;
+            if(!game_over) {
+                current_dino++;
+            }
             current_dino %= slow_dino + 1;
         }
     }
@@ -184,7 +200,9 @@ function spawn_cacti() {
 function draw_cacti() {
     for(let i = 0; i < active_cacti.length; i++) {
         let c_sprite = cacti[active_cacti[i].sprite];
-        active_cacti[i].coordinates.x -= 7; // hardcoded eyeball value to match pace of bg
+        if(!game_over) {
+            active_cacti[i].coordinates.x -= 7; // hardcoded eyeball value to match pace of bg
+        }
         let cactus_aspect_x = cacti_aspect_ratio[active_cacti[i].sprite].x;
         let cactus_aspect_y = cacti_aspect_ratio[active_cacti[i].sprite].y;
         image(c_sprite, active_cacti[i].coordinates.x, dino_position.y + 25, cacti_img_scale * cactus_aspect_x, cacti_img_scale * cactus_aspect_y);
@@ -193,23 +211,70 @@ function draw_cacti() {
 // removes old cacti that are off screen
 function purge_old_cacti() {    // checks and removes oldest cactus i.e. first element
     if(active_cacti.length > 0) {
-        if(active_cacti[0].coordinates.x <= -100) {  // leave some room for it to full disappear from screen
+        if(active_cacti[0].coordinates.x <= -120) {  // leave some room for it to full disappear from screen
             active_cacti.shift();
         }
     }
 }
 // checks for collision
 function collision_check() {
-    console.log(`dino_pos: (${dino_position.x}, ${dino_position.y + dino_jump_height})`);
+    let x_collision = false;
+    let y_collision = false;
+
+    for(let i = 0; i < active_cacti.length; i++) {
+        // check x
+        let curr_cac_x_len = cacti_aspect_ratio[active_cacti[i].sprite].x * cacti_img_scale;
+        if(active_cacti[i].coordinates.x <= dino_position.x && (active_cacti[i].coordinates.x + curr_cac_x_len) >= dino_position.x) {
+            x_collision = true;
+        }
+
+        if((dino_position.y + dino_size.y - dino_jump_height) >= active_cacti[i].coordinates.y && active_cacti[i].coordinates.y <= (dino_position.y - dino_jump_height)) {
+            y_collision = true;
+        }
+        if(y_collision && x_collision) {    // more efficient to check y before x
+            game_over = true;
+        }
+        //console.log(`${dino_position.y + dino_size.y - dino_jump_height} <= ${active_cacti[i].coordinates.y} <= ${(dino_position.y - dino_jump_height)}`);
+    }
+}
+// draws score
+function draw_score() {
+    let time_now = new Date();
+
+    if(game_over && end_score === undefined) {
+        end_score = time_now;
+    }
+    fill('black');
+    if(!game_over) {
+        text(Math.floor((time_now - start_score) / 10), 100, 50);
+    }
+}
+// draws end screen
+function draw_end() {
+    if(game_over) {
+        translate(width / 2, height / 2);
+        colorMode(RGB, 255);
+        noStroke();
+        rectMode(CENTER);
+        fill(255, 224, 138, 200);
+        rect(0, 0, width * 0.8, height * 0.8);
+        
+        textSize(40);
+        fill('#525252');
+        text('GAME OVER', 0, 0);
+        textSize(20);
+        text('Score: ' + Math.floor((end_score - start_score) / 10), 0, 50);
+    }
 }
 // handles space bar for jumping
 function keyPressed() {
     if(keyCode === 32) {
         if(!game_start) {
             game_start = true;
+            start_score = new Date();
             return;
         }
-        if(!dino_jumped && dino_jump_height <= 10) {    // <= 10 allows for slightly earlier jumping for smoother gameplay
+        if(!dino_jumped && dino_jump_height <= 10 && !game_over) {    // <= 10 allows for slightly earlier jumping for smoother gameplay
             dino_jumped = true;
         }
     }
