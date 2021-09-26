@@ -23,7 +23,7 @@ let game_start = false;
 
 let font_one;
 let start_img;
-let random_dino = Math.floor(Math.random() * 6);
+let random_dino = Math.floor(Math.random() * 6);    // picks a random dino
 let dino_asset_base = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
 
 function preload() {
@@ -76,7 +76,6 @@ function draw() {
             }
         }
         
-        console.log(Math.floor(Math.random() * 100));
     }
 }
 
