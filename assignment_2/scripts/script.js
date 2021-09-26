@@ -1,10 +1,16 @@
-// TODO: Move hard coded values in variables
+// note about aspect ratio
+    // since aspect_ratio.x is a lot longer than using a hardcoded 32
+    // I think it would be more beneficial to mention that aspect
+    // ratio here and instead use a hardcoded number for better readability
+    // since some of the lines where aspect ratio is used is rather long
+
 let bg_layers = [];                         // stores bg layers
 let bg_pos = [0, 0, 0, 0, 0, 0];            // moves each bg layer slowly
 let parallax_values = [6, 5, 4, 3, 2, 1];   // rate of parallax
 let parallax_offsets = [0, 0, 0, 0, 0, 0];  // offets to add for parallax
 
 let dino = [];                              // stores dino sprites
+let dino_position;                          // stores dino position
 let dino_sprite = 0;                        // displays dino from index of dino[]
 let slow_dino = 4;                          // slows dino sprite change; larger = slower    
 let current_dino = 0;                       // used for slowing dino
@@ -38,6 +44,8 @@ function preload() {
 function setup() {
     createCanvas(size * 32, size * 9, WEBGL);
     frameRate(60);
+    // set up vectors
+    dino_position = createVector(size * 9 - 150, size * 9 - 110);
 }
 
 function draw() {
@@ -49,6 +57,7 @@ function draw() {
         draw_bg();
         draw_dino();
         draw_fg();
+
         // moves the bg and fg
         bg_pos = bg_pos.map((num) => {
             return num += 2;
@@ -57,7 +66,6 @@ function draw() {
         parallax_offsets = parallax_offsets.map((num, i) => {
             return num + parallax_values[i];
         });
-        
         // check each layer independenly if time to reset
         for(let i = 0; i < bg_pos.length; i++) {
             if((bg_pos[i] + parallax_offsets[i]) > (size * 32)) {
@@ -66,6 +74,7 @@ function draw() {
             }
         }
         
+        console.log(Math.floor(Math.random() * 100));
     }
 }
 
@@ -81,7 +90,6 @@ function draw_start() {
     textSize(20);
     text('Space to start', width / 2, height / 2);
 }
-
 // draws the background (behind dino)
 function draw_bg() {
     // background gradient does not need to parallax
@@ -97,7 +105,6 @@ function draw_fg() {
     image(bg_layers[0], 0 - bg_pos[0] - parallax_offsets[0], 0, size * 32, size * 9);
     image(bg_layers[0], 0 + (size * 32) - bg_pos[0] - parallax_offsets[0], 0, size * 32, size * 9);
 }
-
 // draws dino
 function draw_dino() {
     if(dino_jumped) {   // jump was triggered
@@ -108,7 +115,6 @@ function draw_dino() {
             dino_jump_height += 10; // increase dino height
         }
     }
-    
     if(!dino_jumped) {    // reached jump height or has not jumped yet
         if(dino_jump_height <= 0) {
             dino_jump_height = 0;
@@ -117,7 +123,8 @@ function draw_dino() {
             dino_jump_height -= 4;
         }
     }
-    image(dino[dino_sprite], size * 9 - 150, size * 9 - 110 - dino_jump_height, 100, 100);
+
+    image(dino[dino_sprite], dino_position.x, dino_position.y - dino_jump_height, 100, 100);
     // increase sprite every slow_dino amount of frames
     if(!dino_jumped && dino_jump_height === 0) {
         if(current_dino === slow_dino) {
@@ -134,7 +141,7 @@ function draw_dino() {
 
     }
 }
-
+// handles space bar for jumping
 function keyPressed() {
     if(keyCode === 32) {
         if(!game_start) {
