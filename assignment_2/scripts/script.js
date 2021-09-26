@@ -35,6 +35,8 @@ let game_over = false;                      // true on collision
 let start_score;                            // keeps track of when game start
 let end_score;                              // filled when collision
 
+let restart = false;
+
 let font_one;
 let start_img;
 let random_dino = Math.floor(Math.random() * 6);    // picks a random dino
@@ -118,7 +120,6 @@ function draw() {
                 parallax_offsets[i] = 0;
             }
         }
-        
     }
 }
 // draws the start menu
@@ -127,11 +128,16 @@ function draw_start() {
     textAlign(CENTER);
     textSize(40);
     fill('#525252');
-
-    image(start_img, 0, 0, size * 32, size * 9);
-    text('DINO RUN', width / 2, 75);
-    textSize(20);
-    text('Space to start', width / 2, height / 2);
+    if(restart) {
+        load_loading();
+    }
+    else {
+        image(start_img, 0, 0, size * 32, size * 9);
+        text('DINO RUN', width / 2, 75);
+        textSize(20);
+        text('Space to start', width / 2, height / 2);
+    }
+    
 }
 // draws the background (behind dino)
 function draw_bg() {
@@ -266,6 +272,37 @@ function draw_end() {
         text('Score: ' + Math.floor((end_score - start_score) / 10), 0, 50);
     }
 }
+// restarts game
+function restart_game() {
+    // variables outside of functions
+    bg_layers = [];
+    bg_pos = [0, 0, 0, 0, 0, 0];
+    parallax_offsets = [0, 0, 0, 0, 0, 0];
+    dino = [];
+    dino_sprite = 0;
+    dino_jump_height = 0;
+    dino_jumped = false;
+    cacti = [];
+    active_cacti = [];
+    cacti_aspect_ratio = [];
+    game_start = false;
+    game_over = false;
+    random_dino = Math.floor(Math.random() * 6);
+    preload();
+    dino_position = createVector(size * 9 - 150, size * 9 - 110);
+    dino_size = createVector(100, 100);
+
+}
+// draw loading screen while waiting
+function load_loading() {
+    background('#F8F8F8');
+    fill('#525252');
+    textSize(40);
+    text('Loading...', width / 2, height / 2);
+    textSize(20);
+    restart = false;
+    draw_start();
+}
 // handles space bar for jumping
 function keyPressed() {
     if(keyCode === 32) {
@@ -319,6 +356,12 @@ function keyPressed() {
             return loadImage(`assets/Dino/${dino_asset_base[5]}_dino/dino${idx + 1}.png`);
         });
         game_start = true;
+        return;
+    }
+    // restart
+    if(keyCode === 81) {
+        restart = true;
+        restart_game();
         return;
     }
 }
