@@ -1,3 +1,9 @@
+// TODO: list of features to implement
+    // TODO: keep score using time 
+        // TODO: https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiVv_jVgpzzAhWjoFsKHbPFBM8QFnoECAcQAQ&url=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F6341774%2Fkeep-track-of-how-much-time-is-spent-showing-certain-elements-on-the-page&usg=AOvVaw1uWmMu_xnoWyuzd8SQjmPx
+    // TODO: add cacti
+        // TODO: random chance to spawn at the end of the screen
+    // TODO: calculate hit box and stop game when hit cacti
 // note about aspect ratio
     // since aspect_ratio.x is a lot longer than using a hardcoded 32
     // I think it would be more beneficial to mention that aspect
@@ -121,7 +127,7 @@ function draw_dino() {
             dino_jump_height = 0;
         }
         else {
-            dino_jump_height -= 4;
+            dino_jump_height -= 5;
         }
     }
 
@@ -152,5 +158,48 @@ function keyPressed() {
         if(!dino_jumped && dino_jump_height === 0) {
             dino_jumped = true;
         }
+    }
+    // easter eggs to load specific dino
+    if(keyCode === 66) {    // loads blue dino
+        dino = dino.map((num, idx) => {
+            return loadImage(`assets/Dino/${dino_asset_base[0]}_dino/dino${idx + 1}.png`);
+        });
+        game_start = true;
+        return;
+    }
+    if(keyCode === 71) {    // loads green dino
+        dino = dino.map((num, idx) => {
+            return loadImage(`assets/Dino/${dino_asset_base[1]}_dino/dino${idx + 1}.png`);
+        });
+        game_start = true;
+        return;
+    }
+    if(keyCode === 79) {    // loads orange dino
+        dino = dino.map((num, idx) => {
+            return loadImage(`assets/Dino/${dino_asset_base[2]}_dino/dino${idx + 1}.png`);
+        });
+        game_start = true;
+        return;
+    }
+    if(keyCode === 80) {    // loads purple dino
+        dino = dino.map((num, idx) => {
+            return loadImage(`assets/Dino/${dino_asset_base[3]}_dino/dino${idx + 1}.png`);
+        });
+        game_start = true;
+        return;
+    }
+    if(keyCode === 82) {    // loads red dino
+        dino = dino.map((num, idx) => {
+            return loadImage(`assets/Dino/${dino_asset_base[4]}_dino/dino${idx + 1}.png`);
+        });
+        game_start = true;
+        return;
+    }
+    if(keyCode === 89) {    // loads yellow dino
+        dino = dino.map((num, idx) => {
+            return loadImage(`assets/Dino/${dino_asset_base[5]}_dino/dino${idx + 1}.png`);
+        });
+        game_start = true;
+        return;
     }
 }
