@@ -81,6 +81,7 @@ function setup() {
 }
 
 function draw() {
+    console.log(start_score);
     translate(-width / 2, -height / 2);
     if(!game_start) {   // start menu
         draw_start();
@@ -293,7 +294,7 @@ function restart_game() {
     preload();
     dino_position = createVector(size * 9 - 150, size * 9 - 110);
     dino_size = createVector(100, 100);
-
+    end_score = undefined;
 }
 // draw loading screen while waiting
 function load_loading() {
