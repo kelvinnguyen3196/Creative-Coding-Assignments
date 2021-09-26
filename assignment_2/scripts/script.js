@@ -252,7 +252,7 @@ function draw_score() {
     }
     fill('black');
     if(!game_over) {
-        text(Math.floor((time_now - start_score) / 10), 100, 50);
+        text(Math.floor((time_now - start_score) / 10), width - 100, 40);
     }
 }
 // draws end screen
@@ -267,9 +267,11 @@ function draw_end() {
         
         textSize(40);
         fill('#525252');
-        text('GAME OVER', 0, 0);
+        text('GAME OVER', 0, -20);
         textSize(20);
-        text('Score: ' + Math.floor((end_score - start_score) / 10), 0, 50);
+        text('Score: ' + Math.floor((end_score - start_score) / 10), 0, 20);
+        textSize(15);
+        text('Press Q to restart', 0, 60);
     }
 }
 // restarts game
