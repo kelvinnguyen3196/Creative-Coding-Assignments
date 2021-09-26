@@ -23,11 +23,13 @@ let game_start = false;
 
 let font_one;
 let start_img;
+let random_dino = Math.floor(Math.random() * 6);
+let dino_asset_base = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
 
 function preload() {
     // loading dino sprites
     for(let i = 0; i < 8; i++) {
-        let img = loadImage(`assets/Dino/dino${i + 1}.png`);
+        let img = loadImage(`assets/Dino/${dino_asset_base[random_dino]}_dino/dino${i + 1}.png`);
         dino.push(img);
     }
     // loading bg images
