@@ -1,6 +1,4 @@
-function preload() {
 
-}
 
 function setup() {
 	
