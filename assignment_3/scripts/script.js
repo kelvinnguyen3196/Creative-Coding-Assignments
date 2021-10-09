@@ -1,3 +1,8 @@
+// TODO: Change from drawing every frame to saving values into a linked list
+	// TODO: This may improve performance
+// TODO: Create a developer class for drawing a line
+let SPACE_BAR = 32;
+
 let motion = false;
 let mountains_count = 5;
 let bg_layers = new Array(mountains_count);
@@ -31,4 +36,14 @@ function draw() {
 	// 	vertex(i, 400);
 	// }
 	// endShape();
+}
+
+function keyPressed() {
+	if(keyCode === SPACE_BAR) {
+		motion = !motion;
+		for(let i = 0; i < bg_layers.length; i++) {
+			bg_layers[i].motion_value = motion;
+		}
+		console.log(`motion: ${motion}`);
+	}
 }

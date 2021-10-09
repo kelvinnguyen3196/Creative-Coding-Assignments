@@ -28,7 +28,7 @@ class Mountain {
         fill(this.#color);
 
         beginShape();
-        
+
         if(this.#motion) {
             this.#x_offset = this.#start;
         }
@@ -47,5 +47,9 @@ class Mountain {
         endShape();
 
         this.#start += this.#bumpy;
+    }
+
+    set motion_value(motion) {
+        this.#motion = motion;
     }
 }
