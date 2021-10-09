@@ -37,16 +37,16 @@ class Mountain {
         }
 
         vertex(this.#first_point.x, this.#first_point.y);
-        for(let i = 0; i < width; i += this.#speed) {
+        for(let i = 0; i < width + 100; i += this.#bumpy) {
             let noisy_y = noise(this.#x_offset + this.#noise_offset) * height;
             let mapped_y = map(noisy_y, 0, height, this.#min_height, this.#max_height);
             vertex(i, mapped_y);
-            this.#x_offset += this.#bumpy;
+            this.#x_offset += this.#speed;
         }
         vertex(width, height);
         endShape();
 
-        this.#start += this.#bumpy;
+        this.#start += this.#speed;
     }
 
     set motion_value(motion) {
