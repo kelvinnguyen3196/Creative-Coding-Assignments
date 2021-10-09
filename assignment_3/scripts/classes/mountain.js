@@ -8,8 +8,9 @@ class Mountain {
     #bumpy;
     #speed;
     #color;
+    #motion;
 
-    constructor(min_height, max_height, noise_offset, bumpy, speed, color) {
+    constructor(min_height, max_height, noise_offset, bumpy, speed, color, motion) {
         this.#start = 0;
         this.#x_offset = 0;
         this.#first_point = createVector(0, height * 100);
@@ -19,6 +20,7 @@ class Mountain {
         this.#bumpy = bumpy;
         this.#speed = speed;
         this.#color = color;
+        this.#motion = motion;
     }
 
     draw() {
@@ -26,7 +28,14 @@ class Mountain {
         fill(this.#color);
 
         beginShape();
-        this.#x_offset = this.#start;
+        
+        if(this.#motion) {
+            this.#x_offset = this.#start;
+        }
+        else {
+            this.#x_offset = 0;
+        }
+
         vertex(this.#first_point.x, this.#first_point.y);
         for(let i = 0; i < width; i += this.#speed) {
             let noisy_y = noise(this.#x_offset + this.#noise_offset) * height;
