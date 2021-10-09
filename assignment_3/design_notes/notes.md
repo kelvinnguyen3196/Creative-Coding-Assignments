@@ -54,4 +54,24 @@ draw()
     increment start with speed
 ```
 ## Moon
-## Stars
+## Star
+### Purpose
+* Draw stars in the sky
+### Implementation notes
+* Randomly pick and x and y within the canvas and create an ellipse there. Fill
+with white sounds fine for now. Since mountains take up half of canvas we can 
+just make stars that only go down to half the canvas to optimize
+### Variables
+```js
+private:
+    x
+    y
+```
+### Functions
+```js
+constructor(x, y) 
+    x = x
+    y = y
+draw()  // draws one star
+    create an ellipse with a limited random size and height at x and y
+```
