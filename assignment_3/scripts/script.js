@@ -3,7 +3,7 @@
 // TODO: Create a developer class for drawing a line
 let SPACE_BAR = 32;
 
-let motion = true;
+let motion = false;
 let mountains_count = 5;
 let bg_layers = new Array(mountains_count);
 

@@ -29,12 +29,7 @@ class Mountain {
 
         beginShape();
 
-        if(this.#motion) {
-            this.#x_offset = this.#start;
-        }
-        else {
-            this.#x_offset = 0;
-        }
+        this.#x_offset = this.#start;
 
         vertex(this.#first_point.x, this.#first_point.y);
         for(let i = 0; i < width + 100; i += this.#speed) {
@@ -46,7 +41,13 @@ class Mountain {
         vertex(width, height);
         endShape();
 
-        this.#start += this.#bumpy;
+        if(this.#motion) {
+            this.#start += this.#bumpy;
+        }
+        else {
+            this.#start += 0;
+        }
+        
     }
 
     set motion_value(motion) {
