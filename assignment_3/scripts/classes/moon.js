@@ -21,12 +21,11 @@ class Moon {
         this.#cs_offset = scale_mapped * this.#moon_size;
     }
 
-    draw() {
-        
+    draw(color) {
         noStroke();
         fill(255, 255, 255, this.#opacity);
         circle(this.#x, this.#y, this.#moon_size);
-        fill('#060224');
+        fill(color);
         let x = this.#cx_offset;
         let y = this.#cy_offset;
         let size = this.#cs_offset;

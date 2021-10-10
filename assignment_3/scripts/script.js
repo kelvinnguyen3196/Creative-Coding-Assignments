@@ -1,5 +1,5 @@
 // TODO: It appears that the vertex list is too long i.e. calculating too many
-	// TODO: vertices. Can probably optimize storing less in the linked list
+// TODO: vertices. Can probably optimize storing less in the linked list
 // TODO: Make some stars sparkle
 let M_KEY = 77;		// reset moon
 let R_KEY = 82;		// reset mountains
@@ -12,7 +12,7 @@ let SPACE_BAR = 32;	// reset mountains
 let node_skip = 5;
 
 let motion = false;
-let mountains_count = 5; 
+let mountains_count = 4;
 let mountain_layers;
 let mountain_colors;
 
@@ -43,9 +43,9 @@ function setup() {
 
 function draw() {
 	// noLoop();
-	background('#060224');
+	background(mountain_colors[3]);
 
-	moon.draw();
+	moon.draw(mountain_colors[3]);
 
 	draw_stars();
 
@@ -53,12 +53,13 @@ function draw() {
 	mountain_layers[1].draw();
 	mountain_layers[2].draw();
 	mountain_layers[3].draw();
-	mountain_layers[4].draw();
 
 	// strokeWeight(1);
 	// noStroke();
 	// fill(255);
 	// text(frameRate(), 20, 20);
+
+	noLoop();
 }
 
 function initialize_moon() {
@@ -70,7 +71,7 @@ function initialize_moon() {
 }
 
 function initialize_stars_list() {
-	for(let i = 0; i < star_count; i++) {
+	for (let i = 0; i < star_count; i++) {
 		let rand_x = Math.random() * width;
 		let rand_y = Math.random() * (height / 2);
 		let rand_radius = Math.random() * 2;
@@ -80,47 +81,46 @@ function initialize_stars_list() {
 
 function initialize_mountains() {
 	let random_offsets = new Array(mountains_count);
-	for(let i = 0; i < mountains_count; i++) {
-		random_offsets[i]  = Math.round(Math.random() * 40000) + 10000;
+	for (let i = 0; i < mountains_count; i++) {
+		random_offsets[i] = Math.round(Math.random() * 40000) + 10000;
 	}
 	//constructor(min_height, max_height, noise_offset, speed, bumpy, color, motion)
 	mountain_layers[0] = new Mountain(50, 300, random_offsets[0], 0.025, 0.00325, mountain_colors[0], motion, node_skip);
-	mountain_layers[1] = new Mountain(150, 400, random_offsets[1], 0.025, 0.00325,mountain_colors[1], motion, node_skip);
+	mountain_layers[1] = new Mountain(150, 400, random_offsets[1], 0.025, 0.00325, mountain_colors[1], motion, node_skip);
 	mountain_layers[2] = new Mountain(300, 400, random_offsets[2], 0.025, 0.00325, mountain_colors[2], motion, node_skip);
-	mountain_layers[3] = new Mountain(350, 500, random_offsets[3], 0.025, 0.00325,mountain_colors[3], motion, node_skip);
-	mountain_layers[4] = new Mountain(450, 500, random_offsets[4], 0.025, 0.00325, mountain_colors[4], motion, node_skip);
+	mountain_layers[3] = new Mountain(350, 500, random_offsets[3], 0.025, 0.00325, mountain_colors[3], motion, node_skip);
 	// initialize layers
 	mountain_layers[0].initialize_vertex_list();
-	mountain_layers[1].initialize_vertex_list(); 
+	mountain_layers[1].initialize_vertex_list();
 	mountain_layers[2].initialize_vertex_list();
-	mountain_layers[3].initialize_vertex_list(); 
-	mountain_layers[4].initialize_vertex_list(); 
+	mountain_layers[3].initialize_vertex_list();
 }
 
 function draw_stars() {
-	for(let i = 0; i < star_count; i++) {
+	for (let i = 0; i < star_count; i++) {
 		stars_list[i].draw();
 	}
 }
 
 function keyPressed() {
-	if(keyCode === A_KEY) {
+	if (keyCode === A_KEY) {
 		motion = !motion;
-		for(let i = 0; i < mountain_layers.length; i++) {
+		for (let i = 0; i < mountain_layers.length; i++) {
 			mountain_layers[i].motion_value = motion;
 		}
 		console.log(`motion: ${motion}`);
 	}
-	else if(keyCode === R_KEY) {
+	else if (keyCode === R_KEY) {
 		setup();
 	}
-	else if(keyCode === M_KEY) {
+	else if (keyCode === M_KEY) {
 		initialize_moon();
 	}
-	else if(keyCode === S_KEY) {
+	else if (keyCode === S_KEY) {
 		initialize_stars_list();
 	}
-	else if(keyCode === SPACE_BAR) {
+	else if (keyCode === SPACE_BAR) {
 		initialize_mountains();
 	}
 }
+

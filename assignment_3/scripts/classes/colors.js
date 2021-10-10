@@ -12,22 +12,30 @@ class Colors {
         return hex;
     }
 
+    // NOT MY FUNCTION
+    // from: https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex
+    // by icl7126
+    convert_hsl_to_hex(h, s, l) {
+        l /= 100;
+        const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
+    }
+
     generate_colors() {
-        let r = Math.floor(Math.random() * 256);
-        let g = Math.floor(Math.random() * 256);
-        let b = Math.floor(Math.random() * 256);
+        let lighter = this.convert_hsl_to_hex(247, 61, 79);
+        let orig = this.convert_hsl_to_hex(257, 70, 70);
+        let dark1 = this.convert_hsl_to_hex(267, 70, 43);
+        let dark2 = this.convert_hsl_to_hex(273, 78, 26);
 
-        this.#colors[0] = this.convert_hex_to_rgb(r + 20, g + 20, b + 20);
-        this.#colors[1] = this.convert_hex_to_rgb(r, g, b);
-        this.#colors[2] = this.convert_hex_to_rgb(r - 20, g - 20, b - 20);
-        this.#colors[3] = this.convert_hex_to_rgb(r - 40, g - 40, b - 40);
-        this.#colors[4] = this.convert_hex_to_rgb(r - 60, g - 60, b - 60);
-
-        document.getElementById('color1').style.backgroundColor = this.#colors[0];
-        document.getElementById('color2').style.backgroundColor = this.#colors[1];
-        document.getElementById('color3').style.backgroundColor = this.#colors[2];
-        document.getElementById('color4').style.backgroundColor = this.#colors[3];
-        document.getElementById('color5').style.backgroundColor = this.#colors[4];
+        this.#colors[0] = lighter;
+        this.#colors[1] = orig;
+        this.#colors[2] = dark1;
+        this.#colors[3] = dark2;
     }
 
     get color_palette() {
