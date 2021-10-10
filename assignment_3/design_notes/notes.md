@@ -100,6 +100,17 @@ draw()  // draws one star
 ### Purpose
 * To randomly give us a color palette that looks good for the mountains
 ### Implementation notes
+* hex is a string of combined r + g + b, so we can bit shift
+    * each r, g, b convert to two hex characters
+    * this is because r, g, b have 256 values [0 - 255]
+        * 256 values can be represented with 8 bits [log2(256) = 8]
+    * a hex character can be represented with 4 bits [2^4 = 16]
+    * therefore 8 bits can be represented with 2 hex characters
+* hex has 4 * 6 = 24 total bits
+* R:[1111 1111] G:[1111 1111] B:[1111 1111]
+* r value needs to be shifted 16 to the left
+* g value needs to be shifted 8 to the left
+* b goes at the end no shift necessary
 ### Variables
 ```js
 private:
@@ -111,10 +122,12 @@ private:
 constructor(color_count)
     color_count = color_count
     colors = new array of size color_count
+convert_rgb_to_hex() 
+    // toString converts Number type to String with specified base
+    let hex = '#' + ((r << 16) + (g << 8) + b).toString(16)
 generate_colors()
     randomly pick an rgb
     loop through and mutate the original rgb to complete palette
 get color_palette()
     return colors
-
 ```
