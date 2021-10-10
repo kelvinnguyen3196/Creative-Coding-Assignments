@@ -54,6 +54,27 @@ draw()
     increment start with speed
 ```
 ## Moon
+### Purpose
+* Draw a crescent moon in the sky
+### Implementation notes
+* Draw a circle the color of the moon and have another circle offset it that is 
+the color of the canvas background to make a crescent. Fill the moon with white 
+and have a random limited opacity. Maybe make the opacity less if the sky is 
+lighter or darker?
+### Variables
+```js
+private:
+    x
+    y
+```
+### Functions
+```js
+constructor(x, y)
+    x = x
+    y = y
+draw()
+    create circle w/ limited random size at x and y w/ random limited opacity
+```
 ## Star
 ### Purpose
 * Draw stars in the sky
