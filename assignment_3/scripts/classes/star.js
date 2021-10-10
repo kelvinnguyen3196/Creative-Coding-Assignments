@@ -26,4 +26,8 @@ class Star {
     get r_val() {
         return this.#r;
     }
+
+    set s_r_val(r) {
+        this.#r = r;
+    }
 }

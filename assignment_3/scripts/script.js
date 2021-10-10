@@ -12,7 +12,21 @@ let C_KEY = 67;		// reset colors
 // how many nodes to skip over when drawing mountains
 // larger = less nodes = faster, but less smooth
 // smaller = more nodes = slower, but more smooth
-let node_skip = 5;
+let node_skip = true;
+// mountain slow amount
+let ms0 = 2;
+let ms1 = 3;
+let ms2 = 4;
+let ms3 = 5;
+let ms4 = 6;
+let ms5 = 7;
+// mountain tracker
+let mt0 = 0;
+let mt1 = 0;
+let mt2 = 0;
+let mt3 = 0;
+let mt4 = 0;
+let mt5 = 0;
 
 let motion = false;
 let mountains_count = 4;
@@ -24,7 +38,10 @@ let mountain_colors;
 let extra_colors;
 
 let stars_list;
+let sparkled_stars;
 let star_count = 300;
+let sparkle_slow = 2;
+let sparkle_tracker = 0;
 
 let moon;
 let moon_x;
@@ -49,6 +66,8 @@ function setup() {
 
 	mountain_layers = new Array(mountains_count);
 	stars_list = new Array(star_count);
+	sparkled_stars = new Array(star_count);
+	sparkled_stars.fill(0);
 
 	initialize_stars_list();
 	initialize_mountains();
@@ -64,13 +83,22 @@ function draw() {
 	gradient_maker.draw_vertical(0, 0, width, height, color(mountain_colors[3]), color(contrast_color), 1);
 	moon.draw(mountain_colors[3]);
 
-	draw_stars();
+	if(sparkle_tracker >= sparkle_slow) {
+		sparkle_stars();
+		sparkle_tracker = 0;
+	}
+	else {
+		draw_stars();
+		sparkle_tracker += 1;
+	}
+	
+
+	motion_check();
 
 	back_mountain1.draw_alpha(0.9);
 	// gradient_maker.draw_vertical(0, height - (height * 0.6), width, (height * 0.6), color(lighter2), color(contrast_color), 1);
 	back_mountain2.draw_alpha(1);
 	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(lighter1), color(contrast_color), 1);
-
 	mountain_layers[0].draw();
 	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(mountain_colors[0]), color(contrast_color), 1);
 	mountain_layers[1].draw();
@@ -79,10 +107,53 @@ function draw() {
 	gradient_maker.draw_vertical(0, height - (height * 0.15), width, (height * 0.15), color(mountain_colors[2]), color(contrast_color), 1);
 	mountain_layers[3].draw();
 
+	halt_motion();
+
 	// strokeWeight(1);
 	// noStroke();
 	// fill(255);
-	// text(frameRate(), 20, 20);m
+	// text(frameRate(), 20, 20);
+}
+
+function motion_check() {
+	if(mt0 >= ms0) {
+		mountain_layers[3].skip = false;
+		mt0 = 0;
+	}
+	if(mt1 >= ms1) {
+		mountain_layers[2].skip = false;
+		mt1 = 0;
+	}
+	if(mt2 >= ms2) {
+		mountain_layers[1].skip = false;
+		mt2 = 0;
+	}
+	if(mt3 >= ms3) {
+		mountain_layers[0].skip = false;
+		mt3 = 0;
+	}
+	if(mt4 >= ms4) {
+		back_mountain2.skip = false;
+		mt4 = 0;
+	}
+	if(mt5 >= ms5) {
+		back_mountain1.skip = false;
+		mt5 = 0;
+	}
+	mt0 += 1;
+	mt1 += 1;
+	mt2 += 1;
+	mt3 += 1;
+	mt4 += 1;
+	mt5 += 1;
+}
+
+function halt_motion() {
+	for(let i = 0; i < mountains_count; i++) {
+		mountain_layers[i].skip = true;
+	}
+	back_mountain1.skip = true;
+	back_mountain2.skip = true;
 }
 
 function initialize_moon() {
@@ -96,9 +167,31 @@ function initialize_moon() {
 function initialize_stars_list() {
 	for (let i = 0; i < star_count; i++) {
 		let rand_x = Math.random() * width;
-		let rand_y = Math.random() * (height / 2);
+		let rand_y = Math.random() * (height / 3);
 		let rand_radius = Math.random() * 2;
 		stars_list[i] = new Star(rand_x, rand_y, rand_radius);
+	}
+}
+
+function sparkle_stars() {
+	let random_star = Math.floor(Math.random() * star_count);
+	while(sparkled_stars[random_star] != 0) {
+		random_star = Math.floor(Math.random() * star_count);
+	}
+	sparkled_stars[random_star] = 1;
+	let random_star_size = stars_list[random_star].r_val;
+	stars_list[random_star].s_r_val = random_star_size + 1;
+
+	draw_stars();
+
+	for(let i = 0; i < star_count; i++) {
+		if(sparkled_stars[i] > 0) {
+			sparkled_stars[i] += 1;
+		}
+		if(sparkled_stars[i] === 10) {
+			sparkled_stars[i] = 0;
+			stars_list[i].s_r_val = stars_list[i].r_val - 1;
+		}
 	}
 }
 

@@ -38,7 +38,7 @@ class Mountain {
 
     draw() {
         // calculate new point at end
-        if (this.#motion) {
+        if (this.#motion && !this.#node_skip) {
             let noisy_y = noise(this.#x_offset + this.#noise_offset) * height;
             let mapped_y = map(noisy_y, 0, height, this.#min_height, this.#max_height);
             this.#vertex_list.push_end(new Node(0, mapped_y));
@@ -86,7 +86,7 @@ class Mountain {
     // special draw function that uses colorAlpha
     draw_alpha(alpha) {
         // calculate new point at end
-        if (this.#motion) {
+        if (this.#motion && !this.#node_skip) {
             let noisy_y = noise(this.#x_offset + this.#noise_offset) * height;
             let mapped_y = map(noisy_y, 0, height, this.#min_height, this.#max_height);
             this.#vertex_list.push_end(new Node(0, mapped_y));
@@ -130,5 +130,9 @@ class Mountain {
 
     set new_color(color) {
         this.#color = color;
+    }
+
+    set skip(skip) {
+        this.#node_skip = skip;
     }
 }
