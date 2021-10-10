@@ -127,4 +127,8 @@ class Mountain {
     set motion_value(motion) {
         this.#motion = motion;
     }
+
+    set new_color(color) {
+        this.#color = color;
+    }
 }

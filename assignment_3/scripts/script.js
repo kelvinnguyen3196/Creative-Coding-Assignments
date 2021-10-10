@@ -8,6 +8,7 @@ let R_KEY = 82;		// reset mountains
 let A_KEY = 65;		// animate
 let S_KEY = 83;		// reset stars
 let SPACE_BAR = 32;	// reset mountains
+let C_KEY = 67;		// reset colors
 // how many nodes to skip over when drawing mountains
 // larger = less nodes = faster, but less smooth
 // smaller = more nodes = slower, but more smooth
@@ -15,6 +16,9 @@ let node_skip = 5;
 
 let motion = false;
 let mountains_count = 4;
+let random_offsets;
+let back_mountain1;
+let back_mountain2;
 let mountain_layers;
 let mountain_colors;
 let extra_colors;
@@ -52,7 +56,8 @@ function setup() {
 }
 
 function draw() {
-	// noLoop();
+	let lighter1 = extra_colors[0];
+	let lighter2 = extra_colors[1];
 	let contrast_color = extra_colors[2];
 
 	background(mountain_colors[3]);
@@ -61,16 +66,8 @@ function draw() {
 
 	draw_stars();
 
-	let lighter1 = extra_colors[0];
-	let lighter2 = extra_colors[1];
-
-	let back_mountain1 = new Mountain(height * 0.2, height * 0.4, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter2, motion, node_skip);
-	back_mountain1.initialize_vertex_list();
 	back_mountain1.draw_alpha(0.9);
 	// gradient_maker.draw_vertical(0, height - (height * 0.6), width, (height * 0.6), color(lighter2), color(contrast_color), 1);
-
-	let back_mountain2 = new Mountain(height * 0.3, height * 0.6, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter1, motion, node_skip);
-	back_mountain2.initialize_vertex_list();
 	back_mountain2.draw_alpha(1);
 	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(lighter1), color(contrast_color), 1);
 
@@ -85,9 +82,7 @@ function draw() {
 	// strokeWeight(1);
 	// noStroke();
 	// fill(255);
-	// text(frameRate(), 20, 20);
-
-	noLoop();
+	// text(frameRate(), 20, 20);m
 }
 
 function initialize_moon() {
@@ -108,7 +103,10 @@ function initialize_stars_list() {
 }
 
 function initialize_mountains() {
-	let random_offsets = new Array(mountains_count);
+	let lighter1 = extra_colors[0];
+	let lighter2 = extra_colors[1];
+
+	random_offsets = new Array(mountains_count);
 	for (let i = 0; i < mountains_count; i++) {
 		random_offsets[i] = Math.round(Math.random() * 40000) + 10000;
 	}
@@ -117,11 +115,15 @@ function initialize_mountains() {
 	mountain_layers[1] = new Mountain(height * 0.5, height * 0.8, random_offsets[1], 0.025, 0.00325, mountain_colors[1], motion, node_skip);
 	mountain_layers[2] = new Mountain(height * 0.75, height * 0.9, random_offsets[2], 0.025, 0.00325, mountain_colors[2], motion, node_skip);
 	mountain_layers[3] = new Mountain(height * 0.85, height * 0.95, random_offsets[3], 0.025, 0.00325, mountain_colors[3], motion, node_skip);
+	back_mountain1 = new Mountain(height * 0.2, height * 0.4, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter2, motion, node_skip);
+	back_mountain2 = new Mountain(height * 0.3, height * 0.6, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter1, motion, node_skip);
 	// initialize layers
 	mountain_layers[0].initialize_vertex_list();
 	mountain_layers[1].initialize_vertex_list();
 	mountain_layers[2].initialize_vertex_list();
 	mountain_layers[3].initialize_vertex_list();
+	back_mountain1.initialize_vertex_list();
+	back_mountain2.initialize_vertex_list();
 }
 
 function draw_stars() {
@@ -136,6 +138,8 @@ function keyPressed() {
 		for (let i = 0; i < mountain_layers.length; i++) {
 			mountain_layers[i].motion_value = motion;
 		}
+		back_mountain1.motion_value = motion;
+		back_mountain2.motion_value = motion;
 		console.log(`motion: ${motion}`);
 	}
 	else if (keyCode === R_KEY) {
@@ -149,5 +153,18 @@ function keyPressed() {
 	}
 	else if (keyCode === SPACE_BAR) {
 		initialize_mountains();
+	}
+	else if (keyCode === C_KEY) {
+		palette.generate_colors(mountains_count);
+		mountain_colors = palette.color_palette;
+		extra_colors = palette.extra_color_palette;
+		let lighter1 = extra_colors[0];
+		let lighter2 = extra_colors[1];
+		mountain_layers[0].new_color = mountain_colors[0];
+		mountain_layers[1].new_color = mountain_colors[1];
+		mountain_layers[2].new_color = mountain_colors[2];
+		mountain_layers[3].new_color = mountain_colors[3];
+		back_mountain1.new_color = lighter2;
+		back_mountain2.new_color = lighter1;
 	}
 }
