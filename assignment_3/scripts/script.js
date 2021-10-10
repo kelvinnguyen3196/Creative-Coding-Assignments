@@ -14,6 +14,7 @@ let node_skip = 5;
 let motion = false;
 let mountains_count = 5; 
 let mountain_layers;
+let mountain_colors;
 
 let stars_list;
 let star_count = 300;
@@ -27,6 +28,10 @@ let moon_size;
 function setup() {
 	var canvas = createCanvas(500, 500);
 	canvas.parent('canvas-container');
+
+	let palette = new Colors();
+	palette.generate_colors(mountains_count);
+	mountain_colors = palette.color_palette;
 
 	mountain_layers = new Array(mountains_count);
 	stars_list = new Array(star_count);
@@ -79,11 +84,11 @@ function initialize_mountains() {
 		random_offsets[i]  = Math.round(Math.random() * 40000) + 10000;
 	}
 	//constructor(min_height, max_height, noise_offset, speed, bumpy, color, motion)
-	mountain_layers[0] = new Mountain(50, 300, random_offsets[0], 0.025, 0.00325, '#e6b0ff', motion, node_skip);
-	mountain_layers[1] = new Mountain(150, 400, random_offsets[1], 0.025, 0.00325,'#d29c36', motion, node_skip);
-	mountain_layers[2] = new Mountain(300, 400, random_offsets[2], 0.025, 0.00325, '#d29ceb', motion, node_skip);
-	mountain_layers[3] = new Mountain(350, 500, random_offsets[3], 0.025, 0.00325,'#6e38ff', motion, node_skip);
-	mountain_layers[4] = new Mountain(450, 500, random_offsets[4], 0.025, 0.00325, '#6e38cd', motion, node_skip);
+	mountain_layers[0] = new Mountain(50, 300, random_offsets[0], 0.025, 0.00325, mountain_colors[0], motion, node_skip);
+	mountain_layers[1] = new Mountain(150, 400, random_offsets[1], 0.025, 0.00325,mountain_colors[1], motion, node_skip);
+	mountain_layers[2] = new Mountain(300, 400, random_offsets[2], 0.025, 0.00325, mountain_colors[2], motion, node_skip);
+	mountain_layers[3] = new Mountain(350, 500, random_offsets[3], 0.025, 0.00325,mountain_colors[3], motion, node_skip);
+	mountain_layers[4] = new Mountain(450, 500, random_offsets[4], 0.025, 0.00325, mountain_colors[4], motion, node_skip);
 	// initialize layers
 	mountain_layers[0].initialize_vertex_list();
 	mountain_layers[1].initialize_vertex_list(); 
