@@ -25,9 +25,13 @@ let moon_y;
 let moon_opacity;
 let moon_size;
 
+let gradient_maker;
+
 function setup() {
 	var canvas = createCanvas(500, 500);
 	canvas.parent('canvas-container');
+
+	gradient_maker = new Gradient();
 
 	let palette = new Colors();
 	palette.generate_colors(mountains_count);
@@ -44,15 +48,16 @@ function setup() {
 function draw() {
 	// noLoop();
 	background(mountain_colors[3]);
+	gradient_maker.draw_vertical(0, height - 400, width, height, color(mountain_colors[3]), color(mountain_colors[0]), 1);
 
 	moon.draw(mountain_colors[3]);
 
 	draw_stars();
 
-	mountain_layers[0].draw();
-	mountain_layers[1].draw();
-	mountain_layers[2].draw();
-	mountain_layers[3].draw();
+	// mountain_layers[0].draw();
+	// mountain_layers[1].draw();
+	// mountain_layers[2].draw();
+	// mountain_layers[3].draw();
 
 	// strokeWeight(1);
 	// noStroke();
@@ -123,4 +128,3 @@ function keyPressed() {
 		initialize_mountains();
 	}
 }
-

@@ -131,3 +131,17 @@ generate_colors()
 get color_palette()
     return colors
 ```
+## Gradient
+### Purpose
+* To add visual interest to the mountains by adding a gradient from the bottom
+### Implementation notes
+* I will be using the example code from p5js's website to create a gradient: 
+[link](https://p5js.org/examples/color-linear-gradient.html)
+### Variables
+```js
+
+```
+### Functions
+```js
+will be using the example function
+```
