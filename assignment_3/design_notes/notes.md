@@ -96,3 +96,25 @@ constructor(x, y)
 draw()  // draws one star
     create an ellipse with a limited random size and height at x and y
 ```
+## Colors
+### Purpose
+* To randomly give us a color palette that looks good for the mountains
+### Implementation notes
+### Variables
+```js
+private:
+    color_count
+    colors
+```
+### Functions
+```js
+constructor(color_count)
+    color_count = color_count
+    colors = new array of size color_count
+generate_colors()
+    randomly pick an rgb
+    loop through and mutate the original rgb to complete palette
+get color_palette()
+    return colors
+
+```
