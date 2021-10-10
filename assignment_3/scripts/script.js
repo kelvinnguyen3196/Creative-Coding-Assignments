@@ -1,6 +1,8 @@
 // TODO: It appears that the vertex list is too long i.e. calculating too many
 // TODO: vertices. Can probably optimize storing less in the linked list
 // TODO: Make some stars sparkle
+// TODO: Fix moon
+// TODO: Make middle mountains darker!
 let M_KEY = 77;		// reset moon
 let R_KEY = 82;		// reset mountains
 let A_KEY = 65;		// animate
@@ -27,13 +29,15 @@ let moon_size;
 
 let gradient_maker;
 
+let palette;
+
 function setup() {
-	var canvas = createCanvas(500, 500);
+	var canvas = createCanvas(700, 700);
 	canvas.parent('canvas-container');
 
 	gradient_maker = new Gradient();
 
-	let palette = new Colors();
+	palette = new Colors();
 	palette.generate_colors(mountains_count);
 	mountain_colors = palette.color_palette;
 
@@ -47,17 +51,38 @@ function setup() {
 
 function draw() {
 	// noLoop();
+	let yellow = '#eae2a9';
+	let even_lighter1 = palette.convert_hsl_to_hex(254, 52, 82);
+	let even_lighter2 = palette.convert_hsl_to_hex(254, 40, 87);
+	
 	background(mountain_colors[3]);
-	gradient_maker.draw_vertical(0, height - 400, width, height, color(mountain_colors[3]), color(mountain_colors[0]), 1);
 
+	
+
+	gradient_maker.draw_vertical(0, 0, width, height, color(mountain_colors[3]), color(yellow), 1);
 	moon.draw(mountain_colors[3]);
 
 	draw_stars();
 
-	// mountain_layers[0].draw();
-	// mountain_layers[1].draw();
-	// mountain_layers[2].draw();
-	// mountain_layers[3].draw();
+	
+
+	let back_mountain1 = new Mountain(height * 0.2, height * 0.4, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, even_lighter2, motion, node_skip);
+	back_mountain1.initialize_vertex_list();
+	back_mountain1.draw();
+	gradient_maker.draw_vertical(0, height - (height * 0.6), width, (height * 0.6), color(even_lighter2), color(yellow), 1);
+
+	let back_mountain2 = new Mountain(height * 0.3, height * 0.6, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, even_lighter1, motion, node_skip);
+	back_mountain2.initialize_vertex_list();
+	back_mountain2.draw_alpha(1);
+	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(even_lighter1), color(yellow), 1);
+
+	mountain_layers[0].draw();
+	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(mountain_colors[0]), color(yellow), 1);
+	mountain_layers[1].draw();
+	gradient_maker.draw_vertical(0, height - (height * 0.3), width, (height * 0.3), color(mountain_colors[1]), color(yellow), 1);
+	mountain_layers[2].draw();
+	gradient_maker.draw_vertical(0, height - (height * 0.1), width, (height * 0.1), color(mountain_colors[2]), color(yellow), 1);
+	mountain_layers[3].draw();
 
 	// strokeWeight(1);
 	// noStroke();
@@ -69,7 +94,7 @@ function draw() {
 
 function initialize_moon() {
 	moon_x = Math.random() * (width * 0.8);
-	moon_y = Math.random() * (height / 4);
+	moon_y = Math.random() * (height / 8);
 	moon_opacity = Math.floor((Math.random() * 50) + 180);
 	moon_size = Math.floor((Math.random() * 30) + 80);
 	moon = new Moon(moon_x, moon_y, moon_opacity, moon_size);
@@ -90,10 +115,10 @@ function initialize_mountains() {
 		random_offsets[i] = Math.round(Math.random() * 40000) + 10000;
 	}
 	//constructor(min_height, max_height, noise_offset, speed, bumpy, color, motion)
-	mountain_layers[0] = new Mountain(50, 300, random_offsets[0], 0.025, 0.00325, mountain_colors[0], motion, node_skip);
-	mountain_layers[1] = new Mountain(150, 400, random_offsets[1], 0.025, 0.00325, mountain_colors[1], motion, node_skip);
-	mountain_layers[2] = new Mountain(300, 400, random_offsets[2], 0.025, 0.00325, mountain_colors[2], motion, node_skip);
-	mountain_layers[3] = new Mountain(350, 500, random_offsets[3], 0.025, 0.00325, mountain_colors[3], motion, node_skip);
+	mountain_layers[0] = new Mountain(height * 0.4, height * 0.7, random_offsets[0], 0.025, 0.00325, mountain_colors[0], motion, node_skip);
+	mountain_layers[1] = new Mountain(height * 0.5, height * 0.8, random_offsets[1], 0.025, 0.00325, mountain_colors[1], motion, node_skip);
+	mountain_layers[2] = new Mountain(height * 0.75, height * 0.9, random_offsets[2], 0.025, 0.00325, mountain_colors[2], motion, node_skip);
+	mountain_layers[3] = new Mountain(height * 0.85, height * 0.95, random_offsets[3], 0.025, 0.00325, mountain_colors[3], motion, node_skip);
 	// initialize layers
 	mountain_layers[0].initialize_vertex_list();
 	mountain_layers[1].initialize_vertex_list();

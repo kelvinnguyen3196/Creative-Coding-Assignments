@@ -1,17 +1,13 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background: lightblue;
+    margin: 0;
+    padding: 0;
 }
 
-.colors-container {
-    display: flex;
-    justify-content: center;
-    padding-block: 100px;
-    background: coral;
-}
-
-.box {
-    height: 100px;
-    width: 100px;
-    background-color: orange;
-    border: 1px solid lightslategray;
+canvas {
+    border-radius: 5%;
 }

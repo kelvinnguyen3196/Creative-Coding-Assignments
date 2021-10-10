@@ -3,6 +3,9 @@ class Gradient {
 
     }
 
+    // draws from bot to top
+    // y controls where it stops
+    // h controls
     draw_vertical(x, y, w, h, c1, c2) {
         noFill();
         for (let i = y; i <= y + h; i++) {
