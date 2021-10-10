@@ -17,6 +17,7 @@ let motion = false;
 let mountains_count = 4;
 let mountain_layers;
 let mountain_colors;
+let extra_colors;
 
 let stars_list;
 let star_count = 300;
@@ -40,6 +41,7 @@ function setup() {
 	palette = new Colors();
 	palette.generate_colors(mountains_count);
 	mountain_colors = palette.color_palette;
+	extra_colors = palette.extra_color_palette;
 
 	mountain_layers = new Array(mountains_count);
 	stars_list = new Array(star_count);
@@ -51,37 +53,36 @@ function setup() {
 
 function draw() {
 	// noLoop();
-	let yellow = '#eae2a9';
-	let even_lighter1 = palette.convert_hsl_to_hex(254, 52, 82);
-	let even_lighter2 = palette.convert_hsl_to_hex(254, 40, 87);
+	let contrast_color = extra_colors[2];
 	
 	background(mountain_colors[3]);
 
 	
 
-	gradient_maker.draw_vertical(0, 0, width, height, color(mountain_colors[3]), color(yellow), 1);
+	gradient_maker.draw_vertical(0, 0, width, height, color(mountain_colors[3]), color(contrast_color), 1);
 	moon.draw(mountain_colors[3]);
 
 	draw_stars();
 
-	
+	let lighter1 = extra_colors[0];
+	let lighter2 = extra_colors[1];
 
-	let back_mountain1 = new Mountain(height * 0.2, height * 0.4, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, even_lighter2, motion, node_skip);
+	let back_mountain1 = new Mountain(height * 0.2, height * 0.4, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter2, motion, node_skip);
 	back_mountain1.initialize_vertex_list();
 	back_mountain1.draw();
-	gradient_maker.draw_vertical(0, height - (height * 0.6), width, (height * 0.6), color(even_lighter2), color(yellow), 1);
+	gradient_maker.draw_vertical(0, height - (height * 0.6), width, (height * 0.6), color(lighter2), color(contrast_color), 1);
 
-	let back_mountain2 = new Mountain(height * 0.3, height * 0.6, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, even_lighter1, motion, node_skip);
+	let back_mountain2 = new Mountain(height * 0.3, height * 0.6, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter1, motion, node_skip);
 	back_mountain2.initialize_vertex_list();
 	back_mountain2.draw_alpha(1);
-	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(even_lighter1), color(yellow), 1);
+	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(lighter1), color(contrast_color), 1);
 
 	mountain_layers[0].draw();
-	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(mountain_colors[0]), color(yellow), 1);
+	gradient_maker.draw_vertical(0, height - (height * 0.4), width, (height * 0.4), color(mountain_colors[0]), color(contrast_color), 1);
 	mountain_layers[1].draw();
-	gradient_maker.draw_vertical(0, height - (height * 0.3), width, (height * 0.3), color(mountain_colors[1]), color(yellow), 1);
+	gradient_maker.draw_vertical(0, height - (height * 0.25), width, (height * 0.25), color(mountain_colors[1]), color(contrast_color), 1);
 	mountain_layers[2].draw();
-	gradient_maker.draw_vertical(0, height - (height * 0.1), width, (height * 0.1), color(mountain_colors[2]), color(yellow), 1);
+	gradient_maker.draw_vertical(0, height - (height * 0.15), width, (height * 0.15), color(mountain_colors[2]), color(contrast_color), 1);
 	mountain_layers[3].draw();
 
 	// strokeWeight(1);
@@ -93,11 +94,11 @@ function draw() {
 }
 
 function initialize_moon() {
-	moon_x = Math.random() * (width * 0.8);
+	moon_x = Math.random() * (width * 0.5);
 	moon_y = Math.random() * (height / 8);
 	moon_opacity = Math.floor((Math.random() * 50) + 180);
 	moon_size = Math.floor((Math.random() * 30) + 80);
-	moon = new Moon(moon_x, moon_y, moon_opacity, moon_size);
+	moon = new Moon(moon_x + (width * 0.25), moon_y, moon_opacity, moon_size);
 }
 
 function initialize_stars_list() {

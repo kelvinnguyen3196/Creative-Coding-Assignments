@@ -1,10 +1,12 @@
 class Colors {
     #color_count;
     #colors;
+    #extra_palette; // contains two back mountains and extra color
 
     constructor(color_count) {
         this.#color_count = color_count;
         this.#colors = new Array(this.#color_count);
+        this.#extra_palette = new Array(3);
     }
 
     convert_hex_to_rgb(r, g, b) {
@@ -27,18 +29,35 @@ class Colors {
     }
 
     generate_colors() {
-        let lighter = this.convert_hsl_to_hex(247, 61, 79);
-        let orig = this.convert_hsl_to_hex(257, 70, 70);
-        let dark1 = this.convert_hsl_to_hex(267, 70, 43);
-        let dark2 = this.convert_hsl_to_hex(273, 78, 26);
-
+        let hue_rand = Math.floor(Math.random() * 361);         // 0 - 360
+        let sat_rand = Math.floor(Math.random() * 11) + 70;     // 70 - 80
+        let light_rand = Math.floor(Math.random() * 11) + 30;   // 30 - 40
+        // for color palette
+        let lighter = this.convert_hsl_to_hex(hue_rand - 10, sat_rand - 20, light_rand + 20);
+        let orig = this.convert_hsl_to_hex(hue_rand, sat_rand, light_rand);
+        let dark1 = this.convert_hsl_to_hex(hue_rand + 10, sat_rand + 10, light_rand - 15);
+        let dark2 = this.convert_hsl_to_hex(hue_rand + 20, sat_rand + 10, light_rand - 30);
         this.#colors[0] = lighter;
         this.#colors[1] = orig;
         this.#colors[2] = dark1;
         this.#colors[3] = dark2;
+        // for extra color palette
+        let lighter1 = this.convert_hsl_to_hex(hue_rand - 20, sat_rand - 30, light_rand + 30);
+        let lighter2 = this.convert_hsl_to_hex(hue_rand - 30, sat_rand - 40, light_rand + 40);
+        this.#extra_palette[0] = lighter1;
+        this.#extra_palette[1] = lighter2;
+        // for extra contrast color
+        let contrast_hue_rand = Math.floor(Math.random() * 361);         // 0 - 360
+        let contrast_sat_rand = Math.floor(Math.random() * 11) + 70;     // 70 - 80
+        let contrast_light_rand = Math.floor(Math.random() * 11) + 30;   // 30 - 40
+        this.#extra_palette[2] = this.convert_hsl_to_hex(contrast_hue_rand, contrast_sat_rand, contrast_light_rand);
     }
 
     get color_palette() {
         return this.#colors;
+    }
+
+    get extra_color_palette() {
+        return this.#extra_palette;
     }
 }
