@@ -36,7 +36,7 @@ class Mountain {
         }
     }
 
-    new_draw() {
+    draw() {
         // calculate new point at end
         if(this.#motion) {
             let noisy_y = noise(this.#x_offset + this.#noise_offset) * height;
