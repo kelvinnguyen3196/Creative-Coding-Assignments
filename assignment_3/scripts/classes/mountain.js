@@ -10,8 +10,9 @@ class Mountain {
     #color;
     #motion;
     #vertex_list;
+    #node_skip;
 
-    constructor(min_height, max_height, noise_offset, speed, bumpy, color, motion) {
+    constructor(min_height, max_height, noise_offset, speed, bumpy, color, motion, node_skip) {
         this.#start = 0;
         this.#x_offset = 0;
         this.#first_point = createVector(0, height * 100);
@@ -23,32 +24,7 @@ class Mountain {
         this.#color = color;
         this.#motion = motion;
         this.#vertex_list = new List();
-    }
-
-    draw() {
-        stroke(this.#color);
-        fill(this.#color);
-
-        beginShape();
-
-        this.#x_offset = this.#start;
-
-        vertex(this.#first_point.x, this.#first_point.y);
-        for(let i = 0; i < width + 100; i += this.#speed) {
-            let noisy_y = noise(this.#x_offset + this.#noise_offset) * height;
-            let mapped_y = map(noisy_y, 0, height, this.#min_height, this.#max_height);
-            vertex(i, mapped_y);
-            this.#x_offset += this.#bumpy;
-        }
-        vertex(width, height);
-        endShape();
-
-        if(this.#motion) {
-            this.#start += this.#bumpy;
-        }
-        else {
-            this.#start += 0;
-        }
+        this.#node_skip = node_skip;
     }
 
     initialize_vertex_list() {
@@ -80,9 +56,12 @@ class Mountain {
         
         let current = this.#vertex_list.head_node;
         let canvas_x = 0;
-        while(current !== null) {
+        while(current !== null && canvas_x <= width) {
             vertex(canvas_x, current.y);
             current = current.next;
+            if(current !== null) {      // TODO: is skipping necessary??
+                current = current.next;       
+            }
             canvas_x += 1;
         }
 
