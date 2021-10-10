@@ -54,11 +54,8 @@ function setup() {
 function draw() {
 	// noLoop();
 	let contrast_color = extra_colors[2];
-	
+
 	background(mountain_colors[3]);
-
-	
-
 	gradient_maker.draw_vertical(0, 0, width, height, color(mountain_colors[3]), color(contrast_color), 1);
 	moon.draw(mountain_colors[3]);
 
@@ -69,8 +66,8 @@ function draw() {
 
 	let back_mountain1 = new Mountain(height * 0.2, height * 0.4, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter2, motion, node_skip);
 	back_mountain1.initialize_vertex_list();
-	back_mountain1.draw();
-	gradient_maker.draw_vertical(0, height - (height * 0.6), width, (height * 0.6), color(lighter2), color(contrast_color), 1);
+	back_mountain1.draw_alpha(0.9);
+	// gradient_maker.draw_vertical(0, height - (height * 0.6), width, (height * 0.6), color(lighter2), color(contrast_color), 1);
 
 	let back_mountain2 = new Mountain(height * 0.3, height * 0.6, Math.round(Math.random() * 40000) + 10000, 0.5, 0.00125, lighter1, motion, node_skip);
 	back_mountain2.initialize_vertex_list();

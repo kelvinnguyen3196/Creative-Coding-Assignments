@@ -83,7 +83,7 @@ class Mountain {
         var c = color(aColor);
         return color('rgba(' + [red(c), green(c), blue(c), alpha].join(',') + ')');
     }
-
+    // special draw function that uses colorAlpha
     draw_alpha(alpha) {
         // calculate new point at end
         if (this.#motion) {
