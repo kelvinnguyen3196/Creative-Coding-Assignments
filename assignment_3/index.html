@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assignment 3</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Josefin+Sans:wght@300;400&display=swap"
+        rel="stylesheet">
     <script src="scripts/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.js"></script>
     <script src="scripts/classes/lofi.js"></script>
@@ -19,10 +25,98 @@
     <script src="scripts/classes/mountain.js"></script>
     <script src="scripts/script.js"></script>
 </head>
+
 <body>
-    <div id="canvas-container">
-        <!--p5js sketch here; container for easier styling-->
+    <div class="split-container">
+        <div class="left column">
+            <div class="title">
+                <h1>Relaxing Mountains</h1>
+            </div>
+            <div id="canvas-container">
+                <!--p5js sketch here; container for easier styling-->
+            </div>
+            <div class="volume-component">
+                <h2>Volume: </h2>
+                <h2 id="volume-percent"></h2>
+            </div>
+        </div>
+
+        <div class="right column">
+            <h2>Controls</h2>
+            <div class="controls-grid">
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>1</h3>
+                    </div>
+                    <p>Animate/play/pause</p>
+                </div>
+                
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>2</h3>
+                    </div>
+                    <p>Decrease volume</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>3</h3>
+                    </div>
+                    <p>Increase volume</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>0</h3>
+                    </div>
+                    <p>Change song</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>Q</h3>
+                    </div>
+                    <p>Reset moon</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>W</h3>
+                    </div>
+                    <p>Reset stars</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>E</h3>
+                    </div>
+                    <p>Reset mountains</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>A</h3>
+                    </div>
+                    <p>Reset main color</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>S</h3>
+                    </div>
+                    <p>Reset contrast color</p>
+                </div>
+
+                <div class="control-piece">
+                    <div class="box">
+                        <h3>L</h3>
+                    </div>
+                    <p>Reset all colors</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <h1 id="volume-level"></h1>
+
 </body>
+
 </html>

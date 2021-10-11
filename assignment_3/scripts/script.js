@@ -72,7 +72,17 @@ function preload() {
 }
 
 function setup() {
-	var canvas = createCanvas(700, 700);
+	let width = 0;
+	let height = 0;
+	if (window.innerWidth < 600) {
+		width = window.innerWidth * 0.9;
+	}
+	else {
+		width = 600;
+	}
+	height = width;
+
+	var canvas = createCanvas(width, height);
 	canvas.parent('canvas-container');
 
 	gradient_maker = new Gradient();
@@ -90,6 +100,8 @@ function setup() {
 	initialize_stars_list();
 	initialize_mountains();
 	initialize_moon();
+
+	populate_volume();
 }
 
 function draw() {
@@ -101,8 +113,8 @@ function draw() {
 	gradient_maker.draw_vertical(0, 0, width, height, color(mountain_colors[3]), color(contrast_color), 1);
 	moon.draw(mountain_colors[3]);
 
-	if(motion) {
-		if(sparkle_tracker >= sparkle_slow) {
+	if (motion) {
+		if (sparkle_tracker >= sparkle_slow) {
 			sparkle_stars();
 			sparkle_tracker = 0;
 		}
@@ -115,8 +127,8 @@ function draw() {
 		draw_stars();
 	}
 
-	if(motion) {
-		if(music_playing === false) {
+	if (motion) {
+		if (music_playing === false) {
 			music_player.current_track.setVolume(music_volume);
 			music_player.current_track.loop();
 			music_playing = true;
@@ -150,27 +162,27 @@ function draw() {
 }
 
 function motion_check() {
-	if(mt0 >= ms0) {
+	if (mt0 >= ms0) {
 		mountain_layers[3].skip = false;
 		mt0 = 0;
 	}
-	if(mt1 >= ms1) {
+	if (mt1 >= ms1) {
 		mountain_layers[2].skip = false;
 		mt1 = 0;
 	}
-	if(mt2 >= ms2) {
+	if (mt2 >= ms2) {
 		mountain_layers[1].skip = false;
 		mt2 = 0;
 	}
-	if(mt3 >= ms3) {
+	if (mt3 >= ms3) {
 		mountain_layers[0].skip = false;
 		mt3 = 0;
 	}
-	if(mt4 >= ms4) {
+	if (mt4 >= ms4) {
 		back_mountain2.skip = false;
 		mt4 = 0;
 	}
-	if(mt5 >= ms5) {
+	if (mt5 >= ms5) {
 		back_mountain1.skip = false;
 		mt5 = 0;
 	}
@@ -183,7 +195,7 @@ function motion_check() {
 }
 
 function halt_motion() {
-	for(let i = 0; i < mountains_count; i++) {
+	for (let i = 0; i < mountains_count; i++) {
 		mountain_layers[i].skip = true;
 	}
 	back_mountain1.skip = true;
@@ -209,7 +221,7 @@ function initialize_stars_list() {
 
 function sparkle_stars() {
 	let random_star = Math.floor(Math.random() * star_count);
-	while(sparkled_stars[random_star] != 0) {
+	while (sparkled_stars[random_star] != 0) {
 		random_star = Math.floor(Math.random() * star_count);
 	}
 	sparkled_stars[random_star] = 1;
@@ -218,11 +230,11 @@ function sparkle_stars() {
 
 	draw_stars();
 
-	for(let i = 0; i < star_count; i++) {
-		if(sparkled_stars[i] > 0) {
+	for (let i = 0; i < star_count; i++) {
+		if (sparkled_stars[i] > 0) {
 			sparkled_stars[i] += 1;
 		}
-		if(sparkled_stars[i] === 10) {
+		if (sparkled_stars[i] === 10) {
 			sparkled_stars[i] = 0;
 			stars_list[i].s_r_val = stars_list[i].r_val - 1;
 		}
@@ -259,8 +271,15 @@ function draw_stars() {
 	}
 }
 
+function populate_volume() {
+	let fixed_percentage = music_volume.toFixed(1);
+	let volume_percentage = fixed_percentage * 100;
+
+	document.getElementById('volume-percent').innerHTML = volume_percentage + "%";
+}
+
 function keyPressed() {
-	if(keyCode === ONE_KEY) {							// animate/play
+	if (keyCode === ONE_KEY) {							// animate/play
 		motion = !motion;
 		for (let i = 0; i < mountain_layers.length; i++) {
 			mountain_layers[i].motion_value = motion;
@@ -269,19 +288,19 @@ function keyPressed() {
 		back_mountain2.motion_value = motion;
 		console.log(`motion: ${motion}`);
 	}
-	else if(keyCode === P_KEY) {						// reset all visuals
+	else if (keyCode === P_KEY) {						// reset all visuals
 		setup();
 	}
-	else if(keyCode === Q_KEY) {						// reset moon
+	else if (keyCode === Q_KEY) {						// reset moon
 		initialize_moon();
 	}
-	else if(keyCode === W_KEY) {						// reset stars
+	else if (keyCode === W_KEY) {						// reset stars
 		initialize_stars_list();
 	}
-	else if(keyCode === E_KEY) {						// reset mountains
+	else if (keyCode === E_KEY) {						// reset mountains
 		initialize_mountains();
 	}
-	else if(keyCode === L_KEY) {						// reset all colors
+	else if (keyCode === L_KEY) {						// reset all colors
 		palette.generate_colors(mountains_count);
 		mountain_colors = palette.color_palette;
 		extra_colors = palette.extra_color_palette;
@@ -294,7 +313,7 @@ function keyPressed() {
 		back_mountain1.new_color = lighter2;
 		back_mountain2.new_color = lighter1;
 	}
-	else if(keyCode === A_KEY) {						// reset main colors
+	else if (keyCode === A_KEY) {						// reset main colors
 		palette.regenerate_color_palette();
 		mountain_colors = palette.color_palette;
 		extra_colors = palette.extra_color_palette;
@@ -307,36 +326,32 @@ function keyPressed() {
 		back_mountain1.new_color = lighter2;
 		back_mountain2.new_color = lighter1;
 	}
-	else if(keyCode === S_KEY) {						// reset contrast color
+	else if (keyCode === S_KEY) {						// reset contrast color
 		palette.regenerate_contrast_color();
 	}
-	else if(keyCode === TWO_KEY) {						// decrease volume
-		if(music_volume > 0) {
+	else if (keyCode === TWO_KEY) {						// decrease volume
+		if (music_volume > 0) {
 			music_volume -= 0.1;
 		}
-		if(music_volume < 0) {
+		if (music_volume < 0) {
 			music_volume = 0;
 		}
 		music_player.current_track.setVolume(music_volume);
 		populate_volume();
 	}
-	else if(keyCode === THREE_KEY) {					// increase volume
-		if(music_volume < 1) {
+	else if (keyCode === THREE_KEY) {					// increase volume
+		if (music_volume < 1) {
 			music_volume += 0.1;
 		}
-		if(music_volume > 1) {
+		if (music_volume > 1) {
 			music_volume = 1;
 		}
 		music_player.current_track.setVolume(music_volume);
 		populate_volume();
 	}
-	else if(keyCode === ZERO_KEY) {
+	else if (keyCode === ZERO_KEY) {
 		music_player.change_song();
 		music_player.current_track.setVolume(music_volume);
 		music_player.current_track.loop();
 	}
-}
-
-function populate_volume() {
-	document.getElementById('volume-level').innerHTML = music_volume;
 }

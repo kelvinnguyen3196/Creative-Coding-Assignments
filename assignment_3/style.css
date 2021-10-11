@@ -1,13 +1,108 @@
+:root {
+    font-size: 16px;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
-    background: lightblue;
+    background: hsla(204, 19%, 9%, 1);
     margin: 0;
     padding: 0;
 }
 
 canvas {
-    border-radius: 50%;
+    border-radius: 2%;
+    margin-bottom: 1rem;
+}
+
+.split-container {
+    display: flex;
+}
+
+.column {
+    width: 50%;
+}
+
+.left {
+    display: grid;
+    justify-content: center;
+}
+
+.volume-component h2 {
+    display: inline;
+}
+
+h1 {
+    font-family: 'Amatic SC', cursive;
+    font-size: 4em;
+    color: white;
+    margin-block: 1rem;
+}
+
+h2 {
+    font-size: 2rem;
+    font-family: 'Josefin Sans', sans-serif;
+    color: white;
+    margin-block: 1rem;
+}
+
+#p5_loading {
+    font-family: 'Josefin Sans', sans-serif;
+    color: white;
+}
+
+/* Controls CSS */
+.controls-grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.box {
+    height: 50px;
+    width: 50px;
+    border-radius: 10%;
+    border: 2px solid white;
+}
+
+.box h3 {
+    color: white;
+    text-align: center;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.control-piece p {
+    color: white;
+    text-align: center;
+    font-family: 'Josefin Sans', sans-serif;
+    margin-left: 1rem;
+}
+
+.control-piece {
+    display: flex;
+    margin-left: 2rem;
+    margin-block: 1rem;
+}
+
+@media only screen and (max-width: 500px) {
+    h1 {
+        font-size: 3rem;
+    }
+    
+    .split-container {
+        display: block;
+    }
+
+    .left, .right {
+        width: 100%;
+    }
+
+    .title::before {
+        content: "Mobile contruction in progress! Come back soon... Or try on Desktop (:";
+        font-family: 'Amatic SC', cursive;
+        font-size: 2em;
+        color: yellow;
+        margin-block: 1rem;
+    }
 }
