@@ -70,6 +70,7 @@ h2 {
     color: white;
     text-align: center;
     font-family: 'Josefin Sans', sans-serif;
+    margin-block: 15px;
 }
 
 .control-piece p {
@@ -77,12 +78,46 @@ h2 {
     text-align: center;
     font-family: 'Josefin Sans', sans-serif;
     margin-left: 1rem;
+    font-size: 1rem;
 }
 
 .control-piece {
     display: flex;
     margin-left: 2rem;
     margin-block: 1rem;
+}
+
+.control-box {
+    border: 2px solid #F6EA7A;
+}
+
+.reset-elements {
+    border: 2px solid #F9BA52;
+}
+
+.reset-colors {
+    border: 2px solid #E584A9;
+}
+
+.control-box-heading {
+    margin-bottom: 0;
+    font-size: 2rem;
+    color: #F6EA7A;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.reset-elements-heading {
+    margin-bottom: 0;
+    font-size: 2rem;
+    color: #F9BA52;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.reset-colors-heading {
+    margin-bottom: 0;
+    font-size: 2rem;
+    color: #E584A9;
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 @media only screen and (max-width: 500px) {
