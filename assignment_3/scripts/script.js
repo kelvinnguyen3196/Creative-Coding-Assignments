@@ -1,6 +1,9 @@
 // TODO: It appears that the vertex list is too long i.e. calculating too many
 // TODO: vertices. Can probably optimize storing less in the linked list
 // TODO: Fix moon
+// TODO: Add loading animation
+// TODO: Add some breakpoints to make website responsive
+// TODO: Make button text a fixed width to even things out
 // controls
 let Q_KEY = 81;		// reset moon
 let W_KEY = 87;		// reset stars
