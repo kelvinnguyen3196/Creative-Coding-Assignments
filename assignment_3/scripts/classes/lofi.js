@@ -27,8 +27,7 @@ class Lofi {
     }
 
     load_song() {
-        this.#song_index = Math.floor(Math.random() * this.#lofi_songs_count);
-        this.#lofi_song = this.#all_lofi_songs[this.#song_index];
+        this.#lofi_song = this.#all_lofi_songs[3];
     }
 
     change_song() {

@@ -134,7 +134,7 @@ h2 {
     }
 
     .title::before {
-        content: "Mobile contruction in progress! Come back soon... Or try on Desktop (:";
+        content: "If music doesn't start after 1, press 0";
         font-family: 'Amatic SC', cursive;
         font-size: 2em;
         color: yellow;

@@ -129,9 +129,11 @@ function draw() {
 
 	if (motion) {
 		if (music_playing === false) {
+			music_player.load_song();
 			music_player.current_track.setVolume(music_volume);
 			music_player.current_track.loop();
 			music_playing = true;
+			console.log('here');
 		}
 	}
 	else {
@@ -286,7 +288,9 @@ function keyPressed() {
 		}
 		back_mountain1.motion_value = motion;
 		back_mountain2.motion_value = motion;
-		console.log(`motion: ${motion}`);
+		music_player.change_song();
+		music_player.current_track.setVolume(music_volume);
+		music_player.current_track.loop();
 	}
 	else if (keyCode === P_KEY) {						// reset all visuals
 		setup();
@@ -354,4 +358,82 @@ function keyPressed() {
 		music_player.current_track.setVolume(music_volume);
 		music_player.current_track.loop();
 	}
+}
+
+window.onload = function() {
+	// animations control
+	document.getElementById("one-key").onclick = () => {
+		motion = !motion;
+		for (let i = 0; i < mountain_layers.length; i++) {
+			mountain_layers[i].motion_value = motion;
+		}
+		back_mountain1.motion_value = motion;
+		back_mountain2.motion_value = motion;
+		console.log(`motion: ${motion}`);
+	};
+	document.getElementById("two-key").onclick = () => {
+		if (music_volume > 0) {
+			music_volume -= 0.1;
+		}
+		if (music_volume < 0) {
+			music_volume = 0;
+		}
+		music_player.current_track.setVolume(music_volume);
+		populate_volume();
+	};
+	document.getElementById("three-key").onclick = () => {
+		if (music_volume < 1) {
+			music_volume += 0.1;
+		}
+		if (music_volume > 1) {
+			music_volume = 1;
+		}
+		music_player.current_track.setVolume(music_volume);
+		populate_volume();
+	};
+	document.getElementById("zero-key").onclick = () => {
+		music_player.change_song();
+		music_player.current_track.setVolume(music_volume);
+		music_player.current_track.loop();
+	};
+	// reset controls
+	document.getElementById("q-key").onclick = () => {
+		initialize_moon();
+	};
+	document.getElementById("w-key").onclick = () => {
+		initialize_stars_list();
+	};
+	document.getElementById("e-key").onclick = () => {
+		initialize_mountains();
+	};
+	// color controls
+	document.getElementById("a-key").onclick = () => {
+		palette.regenerate_color_palette();
+		mountain_colors = palette.color_palette;
+		extra_colors = palette.extra_color_palette;
+		let lighter1 = extra_colors[0];
+		let lighter2 = extra_colors[1];
+		mountain_layers[0].new_color = mountain_colors[0];
+		mountain_layers[1].new_color = mountain_colors[1];
+		mountain_layers[2].new_color = mountain_colors[2];
+		mountain_layers[3].new_color = mountain_colors[3];
+		back_mountain1.new_color = lighter2;
+		back_mountain2.new_color = lighter1;
+	};
+	document.getElementById("s-key").onclick = () => {
+		palette.regenerate_contrast_color();
+	};
+	document.getElementById("l-key").onclick = () => {
+		palette.generate_colors(mountains_count);
+		mountain_colors = palette.color_palette;
+		extra_colors = palette.extra_color_palette;
+		let lighter1 = extra_colors[0];
+		let lighter2 = extra_colors[1];
+		mountain_layers[0].new_color = mountain_colors[0];
+		mountain_layers[1].new_color = mountain_colors[1];
+		mountain_layers[2].new_color = mountain_colors[2];
+		mountain_layers[3].new_color = mountain_colors[3];
+		back_mountain1.new_color = lighter2;
+		back_mountain2.new_color = lighter1;
+	};
 }
