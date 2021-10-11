@@ -1,18 +1,23 @@
 // TODO: It appears that the vertex list is too long i.e. calculating too many
 // TODO: vertices. Can probably optimize storing less in the linked list
-// TODO: Make some stars sparkle
 // TODO: Fix moon
-// TODO: Make middle mountains darker!
-let M_KEY = 77;		// reset moon
-let R_KEY = 82;		// reset everything
-let A_KEY = 65;		// animate
-let S_KEY = 83;		// reset stars
-let SPACE_BAR = 32;	// reset mountains
-let C_KEY = 67;		// reset colors
-let ONE_KEY = 49;	// reset main colors
-let TWO_KEY = 50;	// reset contrast color
+// controls
+let Q_KEY = 81;		// reset moon
+let W_KEY = 87;		// reset stars
+let E_KEY = 69;		// reset mountains
+
+let A_KEY = 65;		// reset main color
+let S_KEY = 83;		// reset contrast color
+let L_KEY = 76;		// reset all colors
+
+let ONE_KEY = 49;	// animate/play
+let TWO_KEY = 50;	// decrease volume
 let THREE_KEY = 51;	// increase volume
-let FOUR_KEY = 52;	// decrease volume
+let ZERO_KEY = 48;	// change song
+
+let P_KEY = 80;		// reset all visuals
+
+
 // how many nodes to skip over when drawing mountains
 // larger = less nodes = faster, but less smooth
 // smaller = more nodes = slower, but more smooth
@@ -255,7 +260,7 @@ function draw_stars() {
 }
 
 function keyPressed() {
-	if(keyCode === A_KEY) {
+	if(keyCode === ONE_KEY) {							// animate/play
 		motion = !motion;
 		for (let i = 0; i < mountain_layers.length; i++) {
 			mountain_layers[i].motion_value = motion;
@@ -264,19 +269,19 @@ function keyPressed() {
 		back_mountain2.motion_value = motion;
 		console.log(`motion: ${motion}`);
 	}
-	else if(keyCode === R_KEY) {
+	else if(keyCode === P_KEY) {						// reset all visuals
 		setup();
 	}
-	else if(keyCode === M_KEY) {
+	else if(keyCode === Q_KEY) {						// reset moon
 		initialize_moon();
 	}
-	else if(keyCode === S_KEY) {
+	else if(keyCode === W_KEY) {						// reset stars
 		initialize_stars_list();
 	}
-	else if(keyCode === SPACE_BAR) {
+	else if(keyCode === E_KEY) {						// reset mountains
 		initialize_mountains();
 	}
-	else if(keyCode === C_KEY) {
+	else if(keyCode === L_KEY) {						// reset all colors
 		palette.generate_colors(mountains_count);
 		mountain_colors = palette.color_palette;
 		extra_colors = palette.extra_color_palette;
@@ -289,7 +294,7 @@ function keyPressed() {
 		back_mountain1.new_color = lighter2;
 		back_mountain2.new_color = lighter1;
 	}
-	else if(keyCode === ONE_KEY) {
+	else if(keyCode === A_KEY) {						// reset main colors
 		palette.regenerate_color_palette();
 		mountain_colors = palette.color_palette;
 		extra_colors = palette.extra_color_palette;
@@ -302,10 +307,10 @@ function keyPressed() {
 		back_mountain1.new_color = lighter2;
 		back_mountain2.new_color = lighter1;
 	}
-	else if(keyCode === TWO_KEY) {
+	else if(keyCode === S_KEY) {						// reset contrast color
 		palette.regenerate_contrast_color();
 	}
-	else if(keyCode === THREE_KEY) {
+	else if(keyCode === TWO_KEY) {						// decrease volume
 		if(music_volume > 0) {
 			music_volume -= 0.1;
 		}
@@ -315,7 +320,7 @@ function keyPressed() {
 		music_player.current_track.setVolume(music_volume);
 		populate_volume();
 	}
-	else if(keyCode === FOUR_KEY) {
+	else if(keyCode === THREE_KEY) {					// increase volume
 		if(music_volume < 1) {
 			music_volume += 0.1;
 		}
@@ -324,6 +329,11 @@ function keyPressed() {
 		}
 		music_player.current_track.setVolume(music_volume);
 		populate_volume();
+	}
+	else if(keyCode === ZERO_KEY) {
+		music_player.change_song();
+		music_player.current_track.setVolume(music_volume);
+		music_player.current_track.loop();
 	}
 }
 
