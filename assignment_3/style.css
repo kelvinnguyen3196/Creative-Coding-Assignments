@@ -9,7 +9,7 @@
 body {
     background: hsla(204, 19%, 9%, 1);
     margin: 0;
-    padding: 0;
+    padding: 1rem;
 }
 
 canvas {
@@ -50,7 +50,8 @@ h2 {
 
 #p5_loading {
     font-family: 'Josefin Sans', sans-serif;
-    color: white;
+    color: #F6EA7A;
+    font-size: 3rem;
 }
 
 /* Controls CSS */
