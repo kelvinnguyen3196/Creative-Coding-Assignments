@@ -4,11 +4,15 @@
 // TODO: Fix moon
 // TODO: Make middle mountains darker!
 let M_KEY = 77;		// reset moon
-let R_KEY = 82;		// reset mountains
+let R_KEY = 82;		// reset everything
 let A_KEY = 65;		// animate
 let S_KEY = 83;		// reset stars
 let SPACE_BAR = 32;	// reset mountains
 let C_KEY = 67;		// reset colors
+let ONE_KEY = 49;	// reset main colors
+let TWO_KEY = 50;	// reset contrast color
+let THREE_KEY = 51;	// increase volume
+let FOUR_KEY = 52;	// decrease volume
 // how many nodes to skip over when drawing mountains
 // larger = less nodes = faster, but less smooth
 // smaller = more nodes = slower, but more smooth
@@ -53,6 +57,15 @@ let gradient_maker;
 
 let palette;
 
+let music_player;
+let music_playing = false;
+let music_volume = 0.5;
+
+function preload() {
+	music_player = new Lofi();
+	music_player.load_song();
+}
+
 function setup() {
 	var canvas = createCanvas(700, 700);
 	canvas.parent('canvas-container');
@@ -83,15 +96,31 @@ function draw() {
 	gradient_maker.draw_vertical(0, 0, width, height, color(mountain_colors[3]), color(contrast_color), 1);
 	moon.draw(mountain_colors[3]);
 
-	if(sparkle_tracker >= sparkle_slow) {
-		sparkle_stars();
-		sparkle_tracker = 0;
+	if(motion) {
+		if(sparkle_tracker >= sparkle_slow) {
+			sparkle_stars();
+			sparkle_tracker = 0;
+		}
+		else {
+			draw_stars();
+			sparkle_tracker += 1;
+		}
 	}
 	else {
 		draw_stars();
-		sparkle_tracker += 1;
 	}
-	
+
+	if(motion) {
+		if(music_playing === false) {
+			music_player.current_track.setVolume(music_volume);
+			music_player.current_track.loop();
+			music_playing = true;
+		}
+	}
+	else {
+		music_player.current_track.pause();
+		music_playing = false;
+	}
 
 	motion_check();
 
@@ -226,7 +255,7 @@ function draw_stars() {
 }
 
 function keyPressed() {
-	if (keyCode === A_KEY) {
+	if(keyCode === A_KEY) {
 		motion = !motion;
 		for (let i = 0; i < mountain_layers.length; i++) {
 			mountain_layers[i].motion_value = motion;
@@ -235,19 +264,19 @@ function keyPressed() {
 		back_mountain2.motion_value = motion;
 		console.log(`motion: ${motion}`);
 	}
-	else if (keyCode === R_KEY) {
+	else if(keyCode === R_KEY) {
 		setup();
 	}
-	else if (keyCode === M_KEY) {
+	else if(keyCode === M_KEY) {
 		initialize_moon();
 	}
-	else if (keyCode === S_KEY) {
+	else if(keyCode === S_KEY) {
 		initialize_stars_list();
 	}
-	else if (keyCode === SPACE_BAR) {
+	else if(keyCode === SPACE_BAR) {
 		initialize_mountains();
 	}
-	else if (keyCode === C_KEY) {
+	else if(keyCode === C_KEY) {
 		palette.generate_colors(mountains_count);
 		mountain_colors = palette.color_palette;
 		extra_colors = palette.extra_color_palette;
@@ -260,4 +289,44 @@ function keyPressed() {
 		back_mountain1.new_color = lighter2;
 		back_mountain2.new_color = lighter1;
 	}
+	else if(keyCode === ONE_KEY) {
+		palette.regenerate_color_palette();
+		mountain_colors = palette.color_palette;
+		extra_colors = palette.extra_color_palette;
+		let lighter1 = extra_colors[0];
+		let lighter2 = extra_colors[1];
+		mountain_layers[0].new_color = mountain_colors[0];
+		mountain_layers[1].new_color = mountain_colors[1];
+		mountain_layers[2].new_color = mountain_colors[2];
+		mountain_layers[3].new_color = mountain_colors[3];
+		back_mountain1.new_color = lighter2;
+		back_mountain2.new_color = lighter1;
+	}
+	else if(keyCode === TWO_KEY) {
+		palette.regenerate_contrast_color();
+	}
+	else if(keyCode === THREE_KEY) {
+		if(music_volume > 0) {
+			music_volume -= 0.1;
+		}
+		if(music_volume < 0) {
+			music_volume = 0;
+		}
+		music_player.current_track.setVolume(music_volume);
+		populate_volume();
+	}
+	else if(keyCode === FOUR_KEY) {
+		if(music_volume < 1) {
+			music_volume += 0.1;
+		}
+		if(music_volume > 1) {
+			music_volume = 1;
+		}
+		music_player.current_track.setVolume(music_volume);
+		populate_volume();
+	}
+}
+
+function populate_volume() {
+	document.getElementById('volume-level').innerHTML = music_volume;
 }
