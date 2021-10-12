@@ -77,11 +77,11 @@ function preload() {
 function setup() {
 	let width = 0;
 	let height = 0;
-	if (window.innerWidth < 600) {
-		width = window.innerWidth * 0.9;
+	if (window.innerWidth <= 600) {			// major break point
+		width = window.innerWidth * 0.85;
 	}
 	else {
-		width = 600;
+		width = window.innerWidth * 0.45;
 	}
 	height = width;
 

@@ -25,11 +25,6 @@ canvas {
     width: 50%;
 }
 
-.left {
-    display: grid;
-    justify-content: center;
-}
-
 .volume-component h2 {
     display: inline;
 }
@@ -60,6 +55,7 @@ h2 {
     flex-wrap: wrap;
     width: 80%;
 }
+
 .box {
     height: 50px;
     width: 50px;
@@ -77,10 +73,11 @@ h2 {
 
 .control-piece p {
     color: white;
-    text-align: center;
+    text-align: left;
     font-family: 'Josefin Sans', sans-serif;
     margin-left: 1rem;
     font-size: 1rem;
+    width: 9.5rem;
 }
 
 .control-piece {
@@ -130,7 +127,7 @@ h2 {
     font-family: 'Josefin Sans', sans-serif;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
     h1 {
         font-size: 3rem;
     }
@@ -142,5 +139,10 @@ h2 {
     .left, .right {
         width: 80%;
         margin: auto;
+    }
+
+    .left {
+        display: grid;
+        justify-content: center;
     }
 }
