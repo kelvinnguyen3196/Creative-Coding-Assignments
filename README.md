@@ -14,6 +14,7 @@ I decided to make a sketch inspired by the DVD logo. The inspiration came from t
 ![Assignment 1 GIF Demo](gifs/assignment_1.gif)
 
 For this assignment I used p5.js and attached my canvas to a regular HTML file with a little bit of CSS styling.
+
 ## Assignment 2
 [Live link](https://admiring-rosalind-940628.netlify.app/)
 
@@ -22,3 +23,16 @@ After spending more time learning JavaScript and the p5.js library I felt I was 
 ![Assignment 2 GIF Demo](gifs/assignment_2.gif)
 
 This assignment also used p5.js attached to an HTML file with some CSS styling.
+
+## Assignment 3
+[Live link](https://hopeful-heyrovsky-852f08.netlify.app)
+
+Similar to my last project I added a motion aspect to it. I enjoy adding parallax effects to 2D images because they add more depth to the piece and it helps to create a more 3D effect on a 2D image. While this generative landscape is neat
+
+![Assignment 3 GIF Demo](gifs/assignment_3.gif)
+
+It would be a lot better if it were integrated into a website. I realized that my previous sketch was interesting, but it wasn't presented in a very interesting way. For this project I decided to put some of my HTML and CSS skills to use.
+
+![Relaxing Mountains Website Screenshot](images/Relaxing_Mountains_Website.png)
+
+The generated landscape reminded me of lofi, so I decided to create a lofi music player. It was a very fun assignment that I would love to return to in the future!
